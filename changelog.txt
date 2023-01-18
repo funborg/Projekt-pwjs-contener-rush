@@ -1,0 +1,4 @@
+-18.01.23 
+    -dodano gre
+    -dodano stakti
+    -dodano kamienie

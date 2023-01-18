@@ -1,0 +1,45 @@
+DO ZROBIENIA:
+-absolutne minimum
+    -grafiki:
+        -konterenowiec z góry
+        -kamienie/lodowce
+        -porty(monochromatyczny)
+        -kwadrat kontenera(monochromatyczny)
+        -piana morska
+        -miejsce na ekwipunek
+        -menu
+        -logo
+        -klify(kraniec,wewnetrzy kraniec,zewnątrz)
+    -dwięk
+        -uderzenia statku(mocne i słabe)
+        -szum morza
+        -praca silnika statku
+        -dla dostaw(odebrania i dostarczenia)
+    -gameplay
+        -porty i ich logika
+        -ekwipunek statku
+        -licznik czasu
+        -game over
+        -ui(wskaźnik zdrowia, kompas i ekwipunek)
+        -rework sposobu tworzenia kamieni
+            -unika tworzenia nad innymi obiektami
+            -zamiast znikania odradzają się w innym miejscu
+            -unikają znikania(chyba że uderzone przez gracza) i pojawiania się w kamerze
+
+            
+-jak starczy czasu
+    -grafiki   
+        -pasek zdrowia(pełny i pusty)
+        -magnes do kontenerów
+        -ster
+        -prędkomierz
+    -dzwięki
+        -muzyka
+    -gameplay
+        -ekwipunek w stylu tetrisa
+        -ui(ster,prędkomierz)
+        -rodzaje kontenerów
+        -pogoda
+        -rodzaje przeszkód
+        -ulepszenia     
+        
