@@ -10,7 +10,7 @@ DO ZROBIENIA:
         -menu
         -logo
         -klify(kraniec,wewnetrzy kraniec,zewnątrz)
-    -dwięk
+    -dzwięk
         -uderzenia statku(mocne i słabe)
         -szum morza
         -praca silnika statku
@@ -26,7 +26,7 @@ DO ZROBIENIA:
             -zamiast znikania odradzają się w innym miejscu
             -unikają znikania(chyba że uderzone przez gracza) i pojawiania się w kamerze
 
-            
+
 -jak starczy czasu
     -grafiki   
         -pasek zdrowia(pełny i pusty)
