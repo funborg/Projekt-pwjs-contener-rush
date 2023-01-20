@@ -1,4 +1,5 @@
 import GameScene from './scenes/GameScene'
+import UiScene from './scenes/UiScene'
 
 export default new Phaser.Game({
     type: Phaser.AUTO,
@@ -22,5 +23,5 @@ export default new Phaser.Game({
             
         }
     },
-    scene: [GameScene]
+    scene: [GameScene,UiScene]
 });

@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import AssetsKeys from '../helpers/AssetsKeys';
+import events from '../helpers/Events';
 
 
 export default class Player_ship extends Phaser.Physics.Matter.Sprite
@@ -16,7 +17,7 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         //set bounce value
         this.setBounce(0.5);
         //player sway properties
-        this.rudder={
+        this.helm={
         value: 0,
         max: 0.05,
         step: 0.0015
@@ -44,25 +45,31 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
     //player update
     update(keys)
     {
-        if(this.health<0){
-            //game crashes if it's destroyed
+        if(this.health<=0){
+            //game crashes if it's destroyeeed
             //this.destroy();
+            this.health=0
             this.engine.value=0;
             return;
         }
-        //console.log(this.body.speed)
-        //console.log(this.engine)
-        //swivel rudder
-        if ((keys.right.isDown && this.rudder.value<this.rudder.max) 
-        || (keys.break.isDown && this.rudder.value<-this.rudder.step)){
+        //emit signal for interaction with current position every half second
+        if(this.scene.input.keyboard.checkDown(keys.interact,500)){
+            this.scene.events.emit(events.INTERACT,this.x,this.y)
+        }
+
+
+
+        //swivel helm
+        if ((keys.right.isDown && this.helm.value<this.helm.max) 
+        || (keys.break.isDown && this.helm.value<-this.helm.step)){
             //rotate right if right key is held up to limit
             //or straigthens if breaks are held down rotates towards left 
-            this.rudder.value+=this.rudder.step;
-        }else if ((keys.left.isDown && this.rudder.value>-this.rudder.max) 
-        || (keys.break.isDown && this.rudder.value>this.rudder.step))
+            this.helm.value+=this.helm.step;
+        }else if ((keys.left.isDown && this.helm.value>-this.helm.max) 
+        || (keys.break.isDown && this.helm.value>this.helm.step))
             //rotate left if left key is held up to limit
             //or straigthens if breaks are held down rotates towards right 
-            this.rudder.value-=this.rudder.step;
+            this.helm.value-=this.helm.step;
 
 
 
@@ -78,8 +85,10 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
             //or breaks are held down and engine is in fowards momentum  
             this.engine.value-=this.engine.step*0.75;
         }
-        //rotate sprite based on rudder value
-        this.setRotation(this.rotation+this.rudder.value);
+
+
+        //rotate sprite based on helm value
+        this.setRotation(this.rotation+this.helm.value);
         //save bounce vector before overwriting it
         if(this.bounced){
             this.BounceVec.x =  this.body.velocity.x;
@@ -91,33 +100,41 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         this.setVelocityX(this.BounceVec.x+  Math.sin(this.rotation) * this.engine.value);
         this.setVelocityY(this.BounceVec.y+ -Math.cos(this.rotation) * this.engine.value);
         //values drag
-        this.rudder.value*=0.95;
-        this.engine.value*=0.995;
-        this.BounceVec.x*=0.95;
-        this.BounceVec.y*=0.95;
+        this.helm.value=    this.fade(this.helm.value   ,0.95, this.helm.step/2)
+        this.engine.value=  this.fade(this.engine.value ,0.995,this.engine.step/2)
+        this.BounceVec.x=   this.fade(this.BounceVec.x  ,0.95, this.engine.step/2)
+        this.BounceVec.y=   this.fade(this.BounceVec.y  ,0.95, this.engine.step/2)
+
+    }
+    fade(currval,strength,min){
+        //multiplies value by strength this function works only if 0<strength>1
+        currval*=strength;
+        //if under minimal value set to zero
+        if(currval<min&&currval>-min)
+            currval=0
+        return currval
     }
     //collision procedure
     oncollision(data)
     {
         //colided object data
         const {bodyA} = data;
-
         //get bounce value on the next frame
         this.gameObject.bounced=true;
         //reset players momentum
         this.gameObject.engine.value=0;
         //ignore collision damage if under speed       
         if(this.gameObject.body.speed>5){
-            
+
             //health deduction is speed*2 rounded down
             this.gameObject.health-=Math.floor(this.gameObject.body.speed*2)
+            //emit singal for health change with current health
+            this.gameObject.scene.events.emit(events.HEALTH_CHANGE,this.gameObject.health)
             //destroys hit object if its type = rock
             if (bodyA.gameObject)
                 if (bodyA.gameObject.getData('type') === 'rock')
                     bodyA.gameObject.shipCollision();
                 
         }
-        //console.log(this.gameObject.health)
-        //console.log(this.gameObject.body.speed)
     }
 }

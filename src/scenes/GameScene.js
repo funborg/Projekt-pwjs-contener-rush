@@ -3,12 +3,13 @@ import Player_ship from '../sprites/player_ship';
 import AssetsKeys from '../helpers/AssetsKeys';
 import rock from '../sprites/rock';
 import port from '../sprites/ports';
+import events from '../helpers/Events';
 
 export default class GameScene extends Phaser.Scene
 {
     constructor()
     {
-        super("game");
+        super({key: 'GameScene'},"game");
     }
     preload()
     {
@@ -25,26 +26,29 @@ export default class GameScene extends Phaser.Scene
     //keyboard inputs
 		this.keys = this.input.keyboard.addKeys
         ({
-            left: 'A',
-            right: 'D',
-            foward: 'W',
+            left:     'A',
+            right:    'D',
+            foward:   'W',
             backward: 'S',
-            break: 'SPACE'
+            break:    'SPACE',
+            interact: 'E'
         })
+    //boundry data
         this.boundry=
         {
-        Width:this.game.scale.gameSize.width*2,
-        Height:this.game.scale.gameSize.height*2
+            Width:  this.game.scale.gameSize.width*2,
+            Height: this.game.scale.gameSize.height*2
         }
+    //array of basic colors
         this.colorsarr=
         {
-        red:0xFF0000,
-        blue:0x0000FF,
-        green:0x00FF00,
-        yellow:0xFFFF00,
-        purple:0xFF00FF,
-        aqua:0x00FFFF,
-        white:0xFFFFFF
+            red:    0xFF0000,
+            blue:   0x0000FF,
+            green:  0x00FF00,
+            yellow: 0xFFFF00,
+            purple: 0xFF00FF,
+            aqua:   0x00FFFF,
+            white:  0xFFFFFF
         }
     }  
     create()
@@ -76,20 +80,31 @@ export default class GameScene extends Phaser.Scene
         //temporary rock spawning algorithm TO BE REWORKED
         for(let i=800;i<this.boundry.Height;i+=800)
             for(let j=800;j<this.boundry.Width;j+=800){
-                this.rocks[k] = new port(this,
-                    j+Math.floor(Math.random()*1600-800),
-                    i+Math.floor(Math.random()*1600-800),k,
-                    this.colorsarr[Object.keys(this.colorsarr)[k%7]]);
-                    console.log(this.colorsarr[Object.keys(this.colorsarr)[k%7]])
-                    //method of accesing specific rock from game scene
-                    //console.log(k,this.rocks.find(R=>R.ID==k).x,this.rocks.find(R=>R.ID==k).y);
-                    k++;
-                
-                }
+                this.rocks[k] = new rock(this,
+                j+Math.floor(Math.random()*1600-800),
+                i+Math.floor(Math.random()*1600-800),k);
+                    k++;}
+
+        //temp port spawning
+        this.ports= []
+        for(let i=0;i<7;i++){
+            this.ports[i]=new port(this,
+                Math.floor(Math.random()*this.boundry.Width),
+                Math.floor(Math.random()*this.boundry.Height),
+                i,this.colorsarr[Object.keys(this.colorsarr)[i%7]])
+        }
+
+        //method of accesing specific rock/port from game scene
+        //this.rocks.find(R=>R.ID==k)
+        //example:
+        //console.log(k,this.rocks.find(R=>R.ID==k).x,this.rocks.find(R=>R.ID==k).y);
+
         //create ship in the middle
         this.ship = new Player_ship(this,this.boundry.Width/2,this.boundry.Height/2);
         //lock camera on the ship
         this.cameras.main.startFollow(this.ship);
+        //add healthbar
+        this.events.emit(events.HEALTH_CHANGE,this.ship.health)
 
     }
     update()

@@ -16,11 +16,12 @@ DO ZROBIENIA:
         -praca silnika statku
         -dla dostaw(odebrania i dostarczenia)
     -gameplay
-        -porty i ich logika
+        -ekran startowy
+        -ekran jak grać (najlepiej na koniec)
+        -ekran game over
+        -porty i ich logika 50%
         -ekwipunek statku
-        -licznik czasu
-        -game over
-        -ui(wskaźnik zdrowia, kompas i ekwipunek)
+        -ui(wskaźnik zdrowia 100%, kompas, ekwipunek i licznik czasu 10%)
         -rework sposobu tworzenia kamieni
             -unika tworzenia nad innymi obiektami
             -zamiast znikania odradzają się w innym miejscu
