@@ -99,6 +99,7 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
     //collision procedure
     oncollision(data)
     {
+        //colided object data
         const {bodyA} = data;
 
         //get bounce value on the next frame

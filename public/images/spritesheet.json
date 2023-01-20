@@ -46,6 +46,66 @@
 				"w": 80,
 				"h": 80
 			}
+		},
+		"port":{
+			"frame": {
+				"x": 100,
+				"y": 90,
+				"w": 80,
+				"h": 80
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 5,
+				"y": 5,
+				"w": 80,
+				"h": 80
+			},
+			"sourceSize": {
+				"w": 80,
+				"h": 80
+			}
+		},
+		"container":{
+			"frame": {
+				"x": 185,
+				"y": 5,
+				"w": 40,
+				"h": 40
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 5,
+				"y": 5,
+				"w": 40,
+				"h": 40
+			},
+			"sourceSize": {
+				"w": 40,
+				"h": 40
+			}
+		},
+		"slot":{
+			"frame": {
+				"x": 185,
+				"y": 90,
+				"w": 80,
+				"h": 80
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 5,
+				"y": 5,
+				"w": 80,
+				"h": 80
+			},
+			"sourceSize": {
+				"w": 80,
+				"h": 80
+			}
 		}
 	
 	
@@ -56,7 +116,7 @@
 			"image": "spritesheet",
 			"format": "RGBA8888",
 			"size": {
-				"w": 185,
+				"w": 285,
 				"h": 185
 			},
 			"scale": "1"
