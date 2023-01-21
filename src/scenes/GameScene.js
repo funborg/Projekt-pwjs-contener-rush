@@ -94,7 +94,7 @@ export default class GameScene extends Phaser.Scene
                 i,this.colorsarr[Object.keys(this.colorsarr)[i%7]])
         }
 
-        //method of accesing specific rock/port from game scene
+        //method of accesing specific rock/port with id=k from game scene
         //this.rocks.find(R=>R.ID==k)
         //example:
         //console.log(k,this.rocks.find(R=>R.ID==k).x,this.rocks.find(R=>R.ID==k).y);
@@ -103,12 +103,14 @@ export default class GameScene extends Phaser.Scene
         this.ship = new Player_ship(this,this.boundry.Width/2,this.boundry.Height/2);
         //lock camera on the ship
         this.cameras.main.startFollow(this.ship);
-        //add healthbar
-        this.events.emit(events.HEALTH_CHANGE,this.ship.health)
 
+        //load ui
+        this.scene.launch('Uiscene')
+        
     }
     update()
 	{
+        
     //ship position update
         if(this.ship!==undefined)
             this.ship.update(this.keys);

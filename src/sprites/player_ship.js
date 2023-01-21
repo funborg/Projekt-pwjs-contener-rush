@@ -10,9 +10,7 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
      */
     constructor(scene,x,y)
     {
-        super(
-            scene.matter.world, x, y, AssetsKeys.TEXTURES, 'ship',{isStatic:false}
-        );
+        super(scene.matter.world, x, y, AssetsKeys.TEXTURES, 'ship',{isStatic:false});
         scene.matter.body.setInertia(this.body, Infinity);
         //set bounce value
         this.setBounce(0.5);
@@ -28,7 +26,8 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         max: 16,
         step: 0.15
         }
-        
+        //packages identified by id if id=-1 it means empty
+        this.invetory=[-1,-1,-1]
         //players health
         this.health=100;
         
@@ -54,19 +53,18 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         }
         //emit signal for interaction with current position every half second
         if(this.scene.input.keyboard.checkDown(keys.interact,500)){
-            this.scene.events.emit(events.INTERACT,this.x,this.y)
+            this.scene.events.emit(events.INTERACT,this)
         }
 
 
 
         //swivel helm
-        if ((keys.right.isDown && this.helm.value<this.helm.max) 
-        || (keys.break.isDown && this.helm.value<-this.helm.step)){
+        if ((keys.right.isDown && this.helm.value<this.helm.max))
             //rotate right if right key is held up to limit
             //or straigthens if breaks are held down rotates towards left 
             this.helm.value+=this.helm.step;
-        }else if ((keys.left.isDown && this.helm.value>-this.helm.max) 
-        || (keys.break.isDown && this.helm.value>this.helm.step))
+        
+        if ((keys.left.isDown && this.helm.value>-this.helm.max))
             //rotate left if left key is held up to limit
             //or straigthens if breaks are held down rotates towards right 
             this.helm.value-=this.helm.step;

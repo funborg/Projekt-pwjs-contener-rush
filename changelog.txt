@@ -1,6 +1,6 @@
 _18.01.23 jakub gołoś
     -dodano gre
-    -dodano stakti
+    -dodano staktek
     -dodano kamienie
 
 
@@ -9,3 +9,8 @@ _20.01.23 jakub gołoś
     -dodano ui(zdrowie i niedziałający czas)
     -lekkie przemodelowanie zanikania wartości statku
     -dodano eventy
+
+_21.01.23 jakbu gołoś
+    -dokończono logikę portów
+    -dodano ekwipunek 
+    -dodano wizualizacje ekwipunku
