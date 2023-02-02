@@ -1,0 +1,21 @@
+_18.01.23 jakub gołoś
+    -dodano gre
+    -dodano staktek
+    -dodano kamienie
+
+_20.01.23 jakub gołoś
+    -dodano wpół działające porty
+    -dodano ui(zdrowie i niedziałający czas)
+    -lekkie przemodelowanie zanikania wartości statku
+    -dodano eventy
+
+_21.01.23 jakbu gołoś
+    -dokończono logikę portów
+    -dodano ekwipunek 
+    -dodano wizualizacje ekwipunku
+
+_02.02.23 damian kozak
+    -dodano sceny menu,credits, game over itd.
+    -utworzono grafiki i częściowo dodano je do gry
+    -dodano do gry niektóre dźwięki 
+    -umożliwiono wycieszenie wszystkich dźwięków z poziomu menu
