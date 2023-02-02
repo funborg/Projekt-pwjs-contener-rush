@@ -30,8 +30,10 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         this.invetory=[-1,-1,-1]
         //players health
         this.health=100;
-        
-        
+        //players score
+        this.playerScore = 0;
+        //delivered containers counter
+        this.deliveredContainers = 0;
         //collision procedure
         this.setOnCollide(this.oncollision);
         //bounce vector
