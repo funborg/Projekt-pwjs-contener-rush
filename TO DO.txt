@@ -19,13 +19,14 @@ DO ZROBIENIA:
         -ekran startowy
         -ekran jak grać (najlepiej na koniec)
         -ekran game over
-        -porty i ich logika 100%?
-        -ekwipunek statku 100%?
-        -ui(wskaźnik zdrowia 100%, kompas, ekwipunek 100% i licznik czasu 10%)
-        -rework sposobu tworzenia kamieni
-            -unika tworzenia około innymi obiektami
-            -zamiast znikania odradzają się w innym miejscu
+        -porty i ich logika 100%
+        -ekwipunek statku 100%
+        -ui(wskaźnik zdrowia 100%, kompas, ekwipunek 100% i licznik czasu 100%)
+        -rework sposobu tworzenia kamieni(100%)
+            -unika tworzenia nad innymi obiektami(100%)
+            -zamiast znikania odradzają się w innym miejscu(100%)
             -unikają znikania(chyba że uderzone przez gracza) i pojawiania się w kamerze
+            (unikają tylko pojawiania sie w kamerze)
 
 
 -jak starczy czasu

@@ -4,7 +4,7 @@ import UiScene from './scenes/UiScene'
 export default new Phaser.Game({
     type: Phaser.AUTO,
     width: 1600,
-    height: 1200,
+    height: 900,
     scale: {
         mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
         autoCenter: Phaser.Scale.CENTER_BOTH

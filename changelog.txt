@@ -14,3 +14,8 @@ _21.01.23 jakbu gołoś
     -dokończono logikę portów
     -dodano ekwipunek 
     -dodano wizualizacje ekwipunku
+      
+_02.02,23 jakub gołoś
+    -dodano kompas
+    -dodano nową tworzenia logikę portów
+    -dodano czasomierz

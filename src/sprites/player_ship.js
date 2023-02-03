@@ -27,7 +27,7 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         step: 0.15
         }
         //packages identified by id if id=-1 it means empty
-        this.invetory=[-1,-1,-1]
+        this.inventory=[-1,-1,-1,-1]
         //players health
         this.health=100;
         
@@ -39,18 +39,13 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         this.bounced=false;
         //add this element
         scene.matter.world.scene.add.existing(this);
+        //heal upon succesful delivery
+        this.scene.events.on('completed_delivery',()=>this.heal())
         
     }
     //player update
     update(keys)
     {
-        if(this.health<=0){
-            //game crashes if it's destroyeeed
-            //this.destroy();
-            this.health=0
-            this.engine.value=0;
-            return;
-        }
         //emit signal for interaction with current position every half second
         if(this.scene.input.keyboard.checkDown(keys.interact,500)){
             this.scene.events.emit(events.INTERACT,this)
@@ -115,24 +110,36 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
     //collision procedure
     oncollision(data)
     {
+        
         //colided object data
-        const {bodyA} = data;
+        const {bodyB} = data;
         //get bounce value on the next frame
         this.gameObject.bounced=true;
         //reset players momentum
         this.gameObject.engine.value=0;
-        //ignore collision damage if under speed       
+        //ignore collision damage if under speed      
         if(this.gameObject.body.speed>5){
-
             //health deduction is speed*2 rounded down
             this.gameObject.health-=Math.floor(this.gameObject.body.speed*2)
+            //if ship health is reduced to zero or under trigger gameover sequence
+            if(this.gameObject.health>=0)
+                this.scene.gamescene.events.emit(events.GAME_OVER)
             //emit singal for health change with current health
             this.gameObject.scene.events.emit(events.HEALTH_CHANGE,this.gameObject.health)
             //destroys hit object if its type = rock
-            if (bodyA.gameObject)
-                if (bodyA.gameObject.getData('type') === 'rock')
-                    bodyA.gameObject.shipCollision();
+            if (bodyB.gameObject)
+                if (bodyB.gameObject.getData('type') === 'rock')
+                    bodyB.gameObject.shipCollision();
                 
         }
+
+    }
+    //heal ship
+    heal(){
+        this.health+=5
+        if(this.health>100)
+            this.health=100
+        this.scene.events.emit(events.HEALTH_CHANGE,this.health)
+            
     }
 }
