@@ -5,21 +5,13 @@ import rock from '../sprites/rock';
 import port from '../sprites/ports';
 import events from '../helpers/Events';
 import MenuScene from './MenuScene';
+import GameOverScene from './GameOverScene';
 
 export default class GameScene extends Phaser.Scene
 {
 constructor()
 {
     super({key: 'GameScene'},"game");
-}
-preload()
-{
-    this.load.atlas
-    (
-    AssetsKeys.TEXTURES, 
-    '/images/spritesheet.png', 
-    '/images/spritesheet.json'
-    );
 }
 init()
 {
@@ -34,7 +26,7 @@ init()
         break:    'SPACE',
         interact: 'E'
     })
-    this.ChunkSize=200;
+    this.ChunkSize=300;
     this.ChunksWidth=20;
 //boundry data
     this.boundry=
@@ -58,7 +50,7 @@ create()
 {
     
     //background color
-    this.cameras.main.setBackgroundColor("#0084a5");
+    this.cameras.main.setBackgroundColor("#2961b5");
     //set world bounds
     this.matter.world.setBounds
     (
@@ -69,7 +61,6 @@ create()
     );
     
     //create ship in the middle
-    this.ship = new Player_ship(this,this.boundry.Width/2,this.boundry.Height/2);
     //play area is divide into 200x200 squares each 
     //square can contain only one object
     this.chunks= new Phaser.GameObjects.Group();
@@ -88,7 +79,8 @@ create()
         this.add.line(0,0,0,i,this.boundry.Width*2,i,0x000000);
     for(let i=0;i<this.boundry.Width;i+=this.ChunkSize)
         this.add.line(0,0,i,0,i,this.boundry.Height*2,0x000000);
-
+        
+    this.ship = new Player_ship(this,this.boundry.Width/2,this.boundry.Height/2);
 
     //group containing all rocks
     this.rocks= new Phaser.GameObjects.Group();
@@ -122,10 +114,23 @@ create()
         this.rocks.add(new rock(this,p.x,p.y,p.chunk,this.rocks.getLength()))
         }
     })
+    
+    
+    this.events.on('game_over',()=>{
+        this.scene.stop('Uiscene')
+        this.scene.start('GameOverScene',)
+    })
+
+    this.oceanSound = this.sound.add('oceanSound', { loop: true,volume: 0.1 });
+    
+    
+    if (window.soundMode) 
+        this.oceanSound.play();
+    
 }
 update()
 {
-    
+
 //ship position update
     if(this.ship!==undefined)
         this.ship.update(this.keys);
@@ -133,18 +138,21 @@ update()
 }
 //method of finding unoccupied chunk
 place(frame=0,limit=5000){
-    //inflated camera bounds
-    let cam=new Phaser.Geom.Rectangle
-    Phaser.Geom.Rectangle.CopyFrom(this.cameras.main.worldView,cam)
-    Phaser.Geom.Rectangle.Inflate(cam,rchunk.size,rchunk.size)
 
+    let cam=new Phaser.Geom.Rectangle
     do{
+    //get new chunk
     var rId =Math.floor(Math.random()*(this.chunks.getLength()));
     var rchunk = this.chunks.getFirstNth(rId,true)
 
+    //inflated camera bounds
+    Phaser.Geom.Rectangle.CopyFrom(this.cameras.main.worldView,cam)
+    Phaser.Geom.Rectangle.Inflate(cam,rchunk.size,rchunk.size)
     limit--
-    //check if chunk is not occupied,is not in camera and limit is not reached
-    }while(rchunk.occupied||cam.contains(rchunk.x,rchunk.y)||limit==0)
+    if(limit==0)
+        break;
+    //check if chunk is not occupied,is not in camera
+    }while(rchunk.occupied||cam.contains(rchunk.x,rchunk.y))
     rchunk.occupied=true
     return rchunk.getcoor(frame)
 }

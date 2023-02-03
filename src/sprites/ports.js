@@ -3,7 +3,7 @@ import AssetsKeys from '../helpers/AssetsKeys';
 import Events from '../helpers/Events';
 
 //port origin
-export default class port extends Phaser.Physics.Matter.Sprite
+export default class port extends Phaser.Physics.Matter.Image
 {
 /**
  * @param {Phaser.Scene} scene 
@@ -11,7 +11,7 @@ export default class port extends Phaser.Physics.Matter.Sprite
 constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
 {
     super(
-        scene.matter.world, x, y, AssetsKeys.TEXTURES, 'port',{isStatic:true,key: ID}
+        scene.matter.world, x, y,'port',null,{isStatic:true,key: ID}
     );
     //set meta data
     this.setData('type','portA');
@@ -29,7 +29,8 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     (this.scene,this.x,this.y,this.width*3.5,this.height*3.5,0x00ff00,0.5)
     scene.matter.world.scene.add.existing(this.InteractArea)
     //item
-    this.item = new Phaser.GameObjects.Image(scene,x,y-this.height,AssetsKeys.TEXTURES,'container')
+    this.item = new Phaser.GameObjects.Image(scene,x,y-this.height,'container')
+    this.item.setAngle(90)
     this.item.setAlpha(0.66)
     this.item.setTint(this.color) 
     scene.matter.world.scene.add.existing(this.item);
@@ -52,6 +53,9 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     //listen for interaction
     this.scene.events.on('interact',(ship)=>this.interact(ship))
     //adding brother
+    
+    this.loadContain = this.scene.sound.add('loadContainer',{volume:0.5});
+    this.delivContain = this.scene.sound.add('delivContainer',{volume:0.5});
     this.addbrother(this.scene,color)
 }
 addbrother(scene,color){
@@ -92,6 +96,7 @@ relocate(){
 interact(ship){
     //if ship is close by
 if(this.InteractArea.getBounds().contains(ship.x,ship.y)){
+    
     if(this.HasPackage){
         //place packege in first aviable place
         for(let i=0;i<ship.inventory.length;i++)
@@ -100,6 +105,7 @@ if(this.InteractArea.getBounds().contains(ship.x,ship.y)){
                 this.HasPackage=false
                 this.scene.events.emit(Events.PACKAGE_EXCHANGE,this.ID,ship.inventory,this.color)
                 this.item.setVisible(false)
+                this.loadContain.play()
                 break;
             }
     }else{
@@ -110,6 +116,7 @@ if(this.InteractArea.getBounds().contains(ship.x,ship.y)){
                 this.HasPackage=true
                 this.scene.events.emit(Events.PACKAGE_EXCHANGE,this.ID,ship.inventory,this.color)
                 this.item.setVisible(true)
+                this.loadContain.play()
                 break;
             }
     }
@@ -149,8 +156,10 @@ fadeout(){
 
 completeDelivery(ID){
     //check if delivery was completed
-    if(this.ID===ID&&this.HasPackage)
+    if(this.ID===ID&&this.HasPackage){
+        this.delivContain.play()
         this.fadeout()
+    }
 }  
 
         

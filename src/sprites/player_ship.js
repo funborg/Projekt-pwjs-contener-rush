@@ -3,14 +3,14 @@ import AssetsKeys from '../helpers/AssetsKeys';
 import events from '../helpers/Events';
 
 
-export default class Player_ship extends Phaser.Physics.Matter.Sprite
+export default class Player_ship extends Phaser.Physics.Matter.Image
 {
     /**
      * @param {Phaser.Scene} scene 
      */
     constructor(scene,x,y)
     {
-        super(scene.matter.world, x, y, AssetsKeys.TEXTURES, 'ship',{isStatic:false});
+        super(scene.matter.world, x, y,'ship');
         scene.matter.body.setInertia(this.body, Infinity);
         //set bounce value
         this.setBounce(0.5);
@@ -43,7 +43,13 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         scene.matter.world.scene.add.existing(this);
         //heal upon succesful delivery
         this.scene.events.on('completed_delivery',()=>this.heal())
-        
+        this.scene.events.on('game_over',()=>{this.engine.step=0})
+
+        this.moveSound = this.scene.sound.add('movingShip', { volume: 0.2 });
+        this.staySound = this.scene.sound.add('stayingShip', {volume: 0.2 });
+        this.sCrash = this.scene.sound.add('smallCrash', {volume: 0.2 });
+        this.bCrash = this.scene.sound.add('bigCrash', {volume: 0.2 });
+
     }
     //player update
     update(keys)
@@ -66,19 +72,19 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
             //or straigthens if breaks are held down rotates towards right 
             this.helm.value-=this.helm.step;
 
-
-
         //engine control
         if (( keys.foward.isDown&&this.engine.value<this.engine.max) 
         || (keys.break.isDown&&this.engine.value<-this.engine.step)){
             //moves foward if foward key is held down and under engine limit
             //or breaks are held down and engine is in backward momentum 
             this.engine.value+=this.engine.step;
+
         }else if ((keys.backward.isDown && this.engine.value-this.engine.max/2) 
         || (keys.break.isDown && this.engine.value>this.engine.step*0.75)){
             //move backward if backward key is held down and under engine limit
             //or breaks are held down and engine is in fowards momentum  
             this.engine.value-=this.engine.step*0.75;
+
         }
 
 
@@ -99,6 +105,21 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         this.engine.value=  this.fade(this.engine.value ,0.995,this.engine.step/2)
         this.BounceVec.x=   this.fade(this.BounceVec.x  ,0.95, this.engine.step/2)
         this.BounceVec.y=   this.fade(this.BounceVec.y  ,0.95, this.engine.step/2)
+
+        if (window.soundMode)
+        if(keys.foward.isDown||keys.backward.isDown||
+            (keys.break.isDown&&this.engine.value>this.engine.step)){
+   
+                this.staySound.stop()
+                if(!this.moveSound.isPlaying)
+                    this.moveSound.play();
+            }else{
+                this.moveSound.stop()
+                    if(!this.staySound.isPlaying)
+                        this.staySound.play()
+                
+            }
+
 
     }
     fade(currval,strength,min){
@@ -121,11 +142,12 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         this.gameObject.engine.value=0;
         //ignore collision damage if under speed      
         if(this.gameObject.body.speed>5){
+            this.gameObject.bCrash.play()
             //health deduction is speed*2 rounded down
             this.gameObject.health-=Math.floor(this.gameObject.body.speed*2)
             //if ship health is reduced to zero or under trigger gameover sequence
-            if(this.gameObject.health>=0)
-                this.scene.gamescene.events.emit(events.GAME_OVER)
+            if(this.gameObject.health<=0)
+                this.gameObject.scene.events.emit(events.GAME_OVER)
             //emit singal for health change with current health
             this.gameObject.scene.events.emit(events.HEALTH_CHANGE,this.gameObject.health)
             //destroys hit object if its type = rock
@@ -133,6 +155,8 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
                 if (bodyB.gameObject.getData('type') === 'rock')
                     bodyB.gameObject.shipCollision();
                 
+        }else{
+            this.gameObject.sCrash.play()
         }
 
     }

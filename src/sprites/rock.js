@@ -1,14 +1,14 @@
 import Phaser, { Tweens } from 'phaser'
 import AssetsKeys from '../helpers/AssetsKeys';
 
-export default class rock extends Phaser.Physics.Matter.Sprite {
+export default class rock extends Phaser.Physics.Matter.Image {
     /**
      * @param {Phaser.Scene} scene 
      */
 constructor(scene,x,y,chunk,ID)
 {
     super(
-    scene.matter.world, x, y, AssetsKeys.TEXTURES, 'rock',{isStatic:true,key: ID}
+    scene.matter.world, x, y,'iceBerg',null,{isStatic:true,key: ID}
     );
     //set meta data
     this.setData('type','rock');

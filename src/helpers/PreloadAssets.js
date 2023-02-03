@@ -14,7 +14,7 @@ export default class PreloadAssets extends Phaser.Scene {
         this.load.image('cliffLeft', 'images/cliff_left.png'); //left map border
         this.load.image('cliffRight', 'images/cliff_right.png'); //right map border
         this.load.image('container', 'images/container.png'); //game container
-        this.load.image('iceBerg', 'images/iceBerg.png'); //ice berg
+        this.load.image('iceBerg', 'images/ice_Berg.png'); //ice berg
         this.load.image('port', 'images/port.png'); //port
         this.load.image('rock', 'images/rock.png'); //rock
         this.load.image('seaFoam', 'images/sea_foam.png'); //sea foam

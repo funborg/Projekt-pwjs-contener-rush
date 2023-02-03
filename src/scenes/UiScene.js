@@ -69,7 +69,7 @@ constructor(scene,x,y,ID)
     super(scene,x,y,AssetsKeys.TEXTURES,'slot',{key: ID})
     scene.add.existing(this);
     //ad container graphic and set invisble
-    this.item = new Phaser.GameObjects.Image(scene,x,y,AssetsKeys.TEXTURES,'container')
+    this.item = new Phaser.GameObjects.Image(scene,x,y,'container')
     this.item.setAlpha(0)
     scene.add.existing(this.item);
   
@@ -157,7 +157,7 @@ class texttimer extends Phaser.GameObjects.Text{
     //timer background
     this.backgorund = new Phaser.GameObjects.Graphics(scene)
     this.backgorund.fillStyle(0x000000);
-    this.backgorund.fillRect(this.x-10, this.y-10, this.width+20, this.height+20);
+    this.backgorund.fillRect(this.x-15, this.y-15, this.width+30, this.height+30);
     this.backgorund.fillStyle(0xff8b3d);
     this.backgorund.fillRect(this.x-5, this.y-5, this.width+10, this.height+10);
 
