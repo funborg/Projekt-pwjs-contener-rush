@@ -1,9 +1,7 @@
 import Phaser, { Tweens } from 'phaser'
 import AssetsKeys from '../helpers/AssetsKeys';
 
-
-export default class rock extends Phaser.Physics.Matter.Sprite
-{
+export default class rock extends Phaser.Physics.Matter.Sprite {
     /**
      * @param {Phaser.Scene} scene 
      */

@@ -1,24 +1,26 @@
 DO ZROBIENIA:
 -absolutne minimum
     -grafiki:
-        -konterenowiec z góry
-        -kamienie/lodowce
-        -porty(monochromatyczny)
-        -kwadrat kontenera(monochromatyczny)
-        -piana morska
-        -miejsce na ekwipunek
-        -menu
-        -logo
-        -klify(kraniec,wewnetrzy kraniec,zewnątrz)
+        -konterenowiec z góry //100%
+        -kamienie/lodowce //100%
+        -porty(monochromatyczny) //100%
+        -kwadrat kontenera(monochromatyczny) //100%
+        -piana morska //100%
+        -miejsce na ekwipunek //100%
+        -menu //100%
+        -logo //100%
+        -klify(kraniec,wewnetrzy kraniec,zewnątrz) //100%
     -dzwięk
-        -uderzenia statku(mocne i słabe)
-        -szum morza
-        -praca silnika statku
-        -dla dostaw(odebrania i dostarczenia)
+        -uderzenia statku(mocne i słabe) // 100% 
+        -szum morza // 100% 
+        -praca silnika statku kiedy poruszamy nim oraz kiedy stoi w miejscu //100% 
+        -dla dostaw(odebrania i dostarczenia) //100% 
+        -wciśnięcie przycisku //100% 
     -gameplay
-        -ekran startowy
-        -ekran jak grać (najlepiej na koniec)
-        -ekran game over
+        -ekran startowy //gotowe 100%
+        -ekran napisów ( 'credits' ) //gotowe 100% (do ewentualnej zmiany tekstu)
+        -ekran jak grać (najlepiej na koniec) //100% 
+        -ekran game over //100% (do ewentualnego dodania kolejnych statystyk)
         -porty i ich logika 100%
         -ekwipunek statku 100%
         -ui(wskaźnik zdrowia 100%, kompas, ekwipunek 100% i licznik czasu 100%)
