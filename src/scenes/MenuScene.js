@@ -18,8 +18,8 @@ export default class MenuScene extends Phaser.Scene {
         this.gameTitle.setStroke('#002636', 18);
 
         //creating start & end point for ship
-        var startP = 200;
-        var stopP = 1400;
+        var startP = -200;
+        var stopP = this.game.scale.width+200;
 
         //adding a ship
         this.mShip = this.add.sprite(startP, 583, 'mShip').setOrigin(0.5);
@@ -29,7 +29,7 @@ export default class MenuScene extends Phaser.Scene {
             targets: this.mShip,
             x: stopP,
             ease: 'Linear',
-            duration: 6000,
+            duration: 8000,
             flipX: true,
             yoyo: true,
             repeat: -1
