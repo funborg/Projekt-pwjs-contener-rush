@@ -10,10 +10,10 @@ export default class MenuScene extends Phaser.Scene {
     create() {
 
         //adding background for menu
-        this.add.image(800, 600, 'bground').setOrigin(0.5);
+        this.add.image(960, 540, 'bground').setOrigin(0.5);
 
         //creating game title
-        this.gameTitle = this.add.text(800, 150, 'CONTAINER RUSH', { fontFamily: 'Stencil', fontSize: 128, color: '#046187' }).setOrigin(0.5);
+        this.gameTitle = this.add.text(960, 120, 'CONTAINER RUSH', { fontFamily: 'Stencil', fontSize: 100, color: '#046187' }).setOrigin(0.5);
         this.gameTitle.setStroke('#002636', 18);
         this.game.isSoundOn=true
         //creating start & end point for ship
@@ -21,7 +21,7 @@ export default class MenuScene extends Phaser.Scene {
         var stopP = this.game.scale.width+200;
 
         //adding a ship
-        this.mShip = this.add.sprite(startP, 583, 'mShip').setOrigin(0.5);
+        this.mShip = this.add.sprite(startP, 540, 'mShip').setOrigin(0.5);
 
         //creating a ship movement from start point to stop point
         var shipTween = this.tweens.add({
@@ -35,9 +35,9 @@ export default class MenuScene extends Phaser.Scene {
         });
         this.oceanSound = this.sound.add('oceanSound', { loop: true,volume: 0.1 });
         
-        this.startButton = new Button(this, 800, 310,'START',()=>this.scene.switch('InstrScene'));
-        this.creditsButton = new Button(this, 800, 430,"CREDITS",()=>this.scene.switch('CreditsScene'));
-        this.soundButton = new Button(this, 1390, 1140,'SOUND: ON',this.toggleSound);
+        this.startButton = new Button(this, 960, 210,'START',()=>this.scene.switch('InstrScene'));
+        this.creditsButton = new Button(this, 960, 210,"CREDITS",()=>this.scene.switch('CreditsScene'));
+        this.soundButton = new Button(this, 210, 210,'SOUND: ON',this.toggleSound);
         
         this.game.oceanSound.play()
     }

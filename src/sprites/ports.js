@@ -42,16 +42,16 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     this.item.setTint(this.color)     
     
 
-    this.itemfloat=this.scene.tweens.add({
-        targets: this.item,
-        scaleX:1.1,
-        scaleY:1.1,
-        ease: 'sine.easeInOut',
-        hold: 50,
-        loopDelay: 50,
-        duration: 2000,
-        yoyo:true,
-        repeat:-1
+        this.itemfloat = this.scene.tweens.add({
+            targets: this.item,
+            scaleX: 1.1,
+            scaleY: 1.1,
+            ease: 'sine.easeInOut',
+            hold: 50,
+            loopDelay: 50,
+            duration: 2000,
+            yoyo: true,
+            repeat: -1
 
     })
 
@@ -145,7 +145,7 @@ if(this.InteractArea.getBounds().contains(ship.x,ship.y)){
 }
 }
 
-  
+
 }
 //port destination
 class portB extends port
@@ -169,13 +169,13 @@ relocate(){
     super.relocate()
     this.scene.events.emit(Events.PACKAGE_EXCHANGE,this.ID,this.scene.ship.inventory,this.color)
 
-    this.scene.events.emit(Events.COMPLETED_DELIVERY,this.ID)              
-}
-//fade out itself and  it's brother
-fadeout(){
-    this.brother.fadeout()
-    super.fadeout()
-}
+        this.scene.events.emit(Events.COMPLETED_DELIVERY, this.ID)
+    }
+    //fade out itself and  it's brother
+    fadeout() {
+        this.brother.fadeout()
+        super.fadeout()
+    }
 
 completeDelivery(ID){
     //check if delivery was completed
@@ -186,6 +186,6 @@ completeDelivery(ID){
     }
 }  
 
-        
+
 }
-    
+
