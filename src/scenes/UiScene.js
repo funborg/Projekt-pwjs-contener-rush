@@ -20,6 +20,8 @@ create()
     //timer
     this.timer = new texttimer(this,50,40)
     //group of ship inventory slots 
+
+    //offset vector for slots
     let offest =[{x:-20,y:45},{x:20,y:45},{x:-20,y:-55},{x:20,y:-55}]
     this.slots=new Phaser.GameObjects.Group();
     for(let i=0;i<this.gamescene.ship.inventory.length;i++){
@@ -50,16 +52,16 @@ update()
             this.gamescene.ship.x,this.gamescene.ship.y)
 
     for(let i=0;i<this.slots.getLength();i++)
-    this.slots.getFirstNth(i,true).positionUpdate(this.gamescene.ship.angle)
+        this.slots.getFirstNth(i,true).positionUpdate(this.gamescene.ship.angle)
 }
 
 
 inventoryUpdate(ID,inventory,color){
     if(inventory)
     for(let i=0;i<inventory.length;i++){
-        if(ID==inventory[i]){//if there's item set visible and update color
+        if(ID==inventory[i]){//if there's item set visible and update to color 
             this.slots.getFirstNth(i+1,true).setitem(color,true)
-        }else if(inventory[i]==-1){//if no item found set invisible and reset color 
+        }else if(inventory[i]==-1){//if no item found set i slot invisible and reset color 
             this.slots.getFirstNth(i+1,true).setitem(0xFFFFFF,false)
         }
     }
