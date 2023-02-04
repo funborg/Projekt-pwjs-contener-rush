@@ -1,3 +1,4 @@
+import { homedir } from 'os';
 import Phaser, { GameObjects, Tweens } from 'phaser'
 import AssetsKeys from '../helpers/AssetsKeys';
 import Events from '../helpers/Events';
@@ -13,6 +14,7 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     super(
         scene.matter.world, x, y,'port',null,{isStatic:true,key: ID}
     );
+    
     //set meta data
     this.setData('type','portA');
     this.color = color
@@ -22,18 +24,23 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     this.ID= ID
     //occupied chunk
     this.chunk=chunk;
-
+    this.setAngle(-90)
     //interact area 
     //should be invisible in realese
     this.InteractArea=new Phaser.GameObjects.Rectangle
-    (this.scene,this.x,this.y,this.width*3.5,this.height*3.5,0x00ff00,0.5)
-    scene.matter.world.scene.add.existing(this.InteractArea)
+    (this.scene,this.x,this.y,this.width*3,this.height*3,0x00ff00,0)
+    //highlight for when ship is close by 
+    this.highlight = new Phaser.GameObjects.Image(this.scene,this.x,this.y,'port')
+    this.highlight.setTintFill()
+    this.highlight.setAlpha(0.25)
+    this.highlight.setVisible(false)
+    this.highlight.setAngle(this.angle)
     //item
     this.item = new Phaser.GameObjects.Image(scene,x,y-this.height,'container')
     this.item.setAngle(90)
     this.item.setAlpha(0.66)
-    this.item.setTint(this.color) 
-    scene.matter.world.scene.add.existing(this.item);
+    this.item.setTint(this.color)     
+    
 
     this.itemfloat=this.scene.tweens.add({
         targets: this.item,
@@ -48,8 +55,11 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
 
     })
 
+    scene.matter.world.scene.add.existing(this.InteractArea)
+    scene.matter.world.scene.add.existing(this.item);
     scene.matter.world.scene.add.existing(this);
-
+    
+    scene.matter.world.scene.add.existing(this.highlight)
     //listen for interaction
     this.scene.events.on('interact',(ship)=>this.interact(ship))
     //adding brother
@@ -64,12 +74,21 @@ addbrother(scene,color){
     let p = scene.place(40)
     this.brother = new portB(scene,p.x,p.y,p.chunk,this.ID,color,this)
 }
+//check for ship in interact area
+isready(x,y){
+    if(this.InteractArea.getBounds().contains(x,y))
+        this.highlight.setVisible(true)
+    else
+        this.highlight.setVisible(false)
+    
+
+}
 
 fadeout()
 {
 this.satisfied = true
 this.scene.tweens.add ({
-    targets: [this,this.InteractArea,this.item],
+    targets: [this,this.InteractArea,this.item,this.highlight],
     alpha: 0,
     duration: 300,
     ease: 'Power2',
@@ -80,14 +99,13 @@ this.scene.tweens.add ({
 //change location of it's objects,resets and reappear
 relocate(){
     let p=this.scene.place(this.height/2)
-    this.x=p.x
-    this.y=p.y
+    this.setPosition(p.x,p.y)
     this.setAlpha(1)
-    this.InteractArea.x=p.x
-    this.InteractArea.y=p.y
+    this.InteractArea.setPosition(p.x,p.y)
     this.InteractArea.setAlpha(1)
-    this.item.setX(p.x)
-    this.item.setY(p.y-this.height)           
+    this.highlight.setPosition(p.x,p.y)
+    this.highlight.setAlpha(0.25)
+    this.item.setPosition(p.x,p.y-this.height)          
     this.item.setVisible(!this.item.visible)
     this.item.setAlpha(0.66)
     this.HasPackage=!this.HasPackage
@@ -105,7 +123,8 @@ if(this.InteractArea.getBounds().contains(ship.x,ship.y)){
                 this.HasPackage=false
                 this.scene.events.emit(Events.PACKAGE_EXCHANGE,this.ID,ship.inventory,this.color)
                 this.item.setVisible(false)
-                this.loadContain.play()
+                if(this.scene.game.isSoundOn)
+                    this.loadContain.play()
                 break;
             }
     }else{
@@ -116,11 +135,11 @@ if(this.InteractArea.getBounds().contains(ship.x,ship.y)){
                 this.HasPackage=true
                 this.scene.events.emit(Events.PACKAGE_EXCHANGE,this.ID,ship.inventory,this.color)
                 this.item.setVisible(true)
-                this.loadContain.play()
+                if(this.scene.game.isSoundOn)
+                    this.loadContain.play()
                 break;
             }
     }
-        
     
     
 }
@@ -139,6 +158,10 @@ constructor(scene,x,y,chunk,ID,color,port)
     this.brother=port
     this.item.setAlpha(0)
     this.scene.events.on('package_exchange',(ID)=>this.completeDelivery(ID))
+    //rotate 180 degrees to differentiate from brother
+    this.setAngle(90)
+    
+    this.highlight.setAngle(this.angle)
 }
 //overwrite addbrother function to prevent stack overflow
 addbrother(){}
@@ -157,7 +180,8 @@ fadeout(){
 completeDelivery(ID){
     //check if delivery was completed
     if(this.ID===ID&&this.HasPackage){
-        this.delivContain.play()
+        if(this.scene.game.isSoundOn)
+            this.delivContain.play()
         this.fadeout()
     }
 }  

@@ -1,7 +1,6 @@
 import Phaser from 'phaser'
-import startButton from '../sprites/startButton'
-import creditsButton from '../sprites/creditsButton'
-import soundButton from '../sprites/soundButton'
+import Button from '../sprites/Button'
+
 
 export default class MenuScene extends Phaser.Scene {
     constructor() {
@@ -16,7 +15,7 @@ export default class MenuScene extends Phaser.Scene {
         //creating game title
         this.gameTitle = this.add.text(800, 150, 'CONTAINER RUSH', { fontFamily: 'Stencil', fontSize: 128, color: '#046187' }).setOrigin(0.5);
         this.gameTitle.setStroke('#002636', 18);
-
+        this.game.isSoundOn=true
         //creating start & end point for ship
         var startP = -200;
         var stopP = this.game.scale.width+200;
@@ -34,17 +33,26 @@ export default class MenuScene extends Phaser.Scene {
             yoyo: true,
             repeat: -1
         });
-    
-        this.startButton = new startButton(this, 800, 310, 'InstrScene');
-        this.creditsButton = new creditsButton(this, 800, 430);
-        this.soundButton = new soundButton(this, 1390, 1140);
+        this.oceanSound = this.sound.add('oceanSound', { loop: true,volume: 0.1 });
+        
+        this.startButton = new Button(this, 800, 310,'START',()=>this.scene.switch('InstrScene'));
+        this.creditsButton = new Button(this, 800, 430,"CREDITS",()=>this.scene.switch('CreditsScene'));
+        this.soundButton = new Button(this, 1390, 1140,'SOUND: ON',this.toggleSound);
+        
+        this.game.oceanSound.play()
     }
-    update(){
-        //turn off sounds if soundButton = OFF
-        this.startButton.isSoundOn = this.soundButton.isSoundOn;
-        this.creditsButton.isSoundOn = this.soundButton.isSoundOn;
 
-        //create a variable holding sound mode (ON/OFF) that'll be available to use in other scenes
-        window.soundMode = this.soundButton.isSoundOn;
+ 
+    toggleSound() {
+        if(this.game.isSoundOn){
+            this.soundButton.setText("SOUND: OFF");
+            this.game.isSoundOn = false;
+            this.game.oceanSound.stop()
+        }
+        else {
+            this.soundButton.setText("SOUND: ON");
+            this.game.isSoundOn = true;
+            this.game.oceanSound.play()
+        }
     }
 }

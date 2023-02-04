@@ -60,6 +60,9 @@ create()
         this.boundry.Height
     );
     
+    //particle emitter
+    this.foam = this.add.particles('seaFoam') 
+
     //create ship in the middle
     //play area is divide into 200x200 squares each 
     //square can contain only one object
@@ -78,8 +81,8 @@ create()
     for(let i=0;i<this.boundry.Height;i+=this.ChunkSize)
         this.add.line(0,0,0,i,this.boundry.Width*2,i,0x000000);
     for(let i=0;i<this.boundry.Width;i+=this.ChunkSize)
-        this.add.line(0,0,i,0,i,this.boundry.Height*2,0x000000);
-        
+       this.add.line(0,0,i,0,i,this.boundry.Height*2,0x000000);       
+
     this.ship = new Player_ship(this,this.boundry.Width/2,this.boundry.Height/2);
 
     //group containing all rocks
@@ -115,18 +118,45 @@ create()
         }
     })
     
-    
+    //game over sequence
     this.events.on('game_over',()=>{
+        //if ship was destroyed fade it out
+        if(this.ship.health<=0){
+        this.ship.trailL.stop();
+        this.ship.trailR.stop();
+        this.add.tween({
+            targets:this.ship,
+            alpha:0.05,
+            duration:3000,
+        })
+        }
+        //fade out camera game over
         this.scene.stop('Uiscene')
-        this.scene.start('GameOverScene',)
+        this.time.delayedCall(1000, () => {
+        this.cameras.main.fadeOut(2000, 0, 0, 0)})
+        
     })
+    //on camera fade out change scene
+	this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+		this.time.delayedCall(1000, () => {this.scene.start('GameOverScene',)})})
 
-    this.oceanSound = this.sound.add('oceanSound', { loop: true,volume: 0.1 });
+ 
+    //wave on the ocean
+    this.waves = this.foam.createEmitter({
+        frequency: 600,
+        quantity: 20,
+        rotate:{min:-20,max:-70},
+        scale:{start:0,end:1.5,ease:'Back'},
+        alpha:{start:0.8,end:0,ease:'Sine'},
+        lifespan:  {min:1000,max:5000},
+        x:         {min:0,   max:this.boundry.Width},
+        y:         {min:0,   max:this.boundry.Height},
+        speedX:      -200,
+        speedY:      200,
+        
+    });
     
-    
-    if (window.soundMode) 
-        this.oceanSound.play();
-    
+    this.cameras.main.fadeIn(1000)
 }
 update()
 {
@@ -134,7 +164,11 @@ update()
 //ship position update
     if(this.ship!==undefined)
         this.ship.update(this.keys);
-    
+    for(let i=0;i<this.ports.getLength();i++){
+        this.ports.getFirstNth(i,true).isready(this.ship.x,this.ship.y)
+        this.ports.getFirstNth(i,true).brother.isready(this.ship.x,this.ship.y)
+    }
+
 }
 //method of finding unoccupied chunk
 place(frame=0,limit=5000){
@@ -149,6 +183,7 @@ place(frame=0,limit=5000){
     Phaser.Geom.Rectangle.CopyFrom(this.cameras.main.worldView,cam)
     Phaser.Geom.Rectangle.Inflate(cam,rchunk.size,rchunk.size)
     limit--
+    //check if limit has not been reached
     if(limit==0)
         break;
     //check if chunk is not occupied,is not in camera
@@ -158,7 +193,7 @@ place(frame=0,limit=5000){
 }
 
 }
-
+//chunk object for tracking objects located inside of it
 class chunk extends Phaser.GameObjects.Zone{
     constructor(scene,ID,x,y,size)
     { 
@@ -167,6 +202,7 @@ class chunk extends Phaser.GameObjects.Zone{
     this.size=size
     this.occupied=false
     this.ID=ID
+
     }
     //return random coordinates and this object 
     getcoor(frame=0){

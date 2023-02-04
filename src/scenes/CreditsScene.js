@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
-import soundButton from '../sprites/soundButton'
-import menuButton from '../sprites/menuButton'
 import MenuScene from './MenuScene';
+import Button from '../sprites/Button';
+
 
 export default class CreditsScene extends Phaser.Scene {
     constructor() {
@@ -11,7 +11,6 @@ export default class CreditsScene extends Phaser.Scene {
 create() {
     //adding background for menu
     this.add.image(800, 600, 'bground').setOrigin(0.5);
-
     //creating text (in this form it'll be easier to concatenate)
     var creators = "Game Creators :";
     var creator1 = "Jakub Gołoś";
@@ -33,7 +32,7 @@ create() {
     this.text.setStroke('#002636', 10);
     this.text.setShadow(1, 2, '#000000');
 
-    this.mButton = new menuButton(this, 160, 1145);
+    this.mButton = new Button(this, 160, 1145,'MENU',this.switch);
 }
 
 update() {
@@ -47,8 +46,11 @@ update() {
     }
 
     //turn off button volume if sounds were muted in menu
-    if(!window.soundMode){
-        this.mButton.isSoundOn = false;
-    }
+
+}
+switch(){
+    this.scene.restart('CreditsScene');
+    this.scene.switch('MenuScene');
+
 }
 }

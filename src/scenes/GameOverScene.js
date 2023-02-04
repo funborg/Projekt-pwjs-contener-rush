@@ -1,8 +1,7 @@
 import Phaser from 'phaser'
-import menuButton from '../sprites/menuButton'
-import restartButton from '../sprites/restartButton'
 import MenuScene from './MenuScene'
 import GameScene from './GameScene'
+import Button from '../sprites/Button';
 
 export default class GameOverScene extends Phaser.Scene {
     constructor() {
@@ -10,7 +9,7 @@ export default class GameOverScene extends Phaser.Scene {
     }
 
     create() {
-
+        this.cameras.main.fadeIn(1000)
         //adding background
         this.add.image(800, 600, 'bground');
 
@@ -67,14 +66,12 @@ export default class GameOverScene extends Phaser.Scene {
         graphics.strokeLineShape(lineTwo);
 
         //creating menu & restart buttons 
-        this.menuB = new menuButton(this, innerWidth / 2 - 400, innerHeight / 2 + 490);
-        this.restartB = new restartButton(this, innerWidth / 2 + 65, innerHeight / 2 + 490);
+        this.menuB = new Button(this, innerWidth / 2 - 400, innerHeight / 2 + 490,"MENU",()=>this.scene.switch('MenuScene'));
+        this.restartB = new Button(this, innerWidth / 2 + 65, innerHeight / 2 + 490,"RESTART",()=>this.cameras.main.fadeOut(2000, 0, 0, 0));
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.time.delayedCall(1000, () => {this.scene.start('GameScene',)})})
+    
     }
-    update() {
-        //turn off button volume if sounds were muted in menu
-        if (!window.soundMode) {
-            this.menuB.isSoundOn = false;
-            this.restartB.isSoundOn = false;
-        }
-    }
+
+
 }

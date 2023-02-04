@@ -1,6 +1,5 @@
 import Phaser from 'phaser'
-import menuButton from '../sprites/menuButton'
-import startButton from '../sprites/startButton'
+import Button from '../sprites/Button'
 import MenuScene from './MenuScene'
 
 export default class InstrScene extends Phaser.Scene {
@@ -125,8 +124,14 @@ export default class InstrScene extends Phaser.Scene {
         graphics.strokeLineShape(lineThree);
 
         //creating menu & restart buttons 
-        this.menuB = new menuButton(this, innerWidth / 2 - 400, innerHeight / 2 + 490);
-        this.startB = new startButton(this, innerWidth / 2 + 65, innerHeight / 2 + 490, 'GameScene');
+        this.menuB = new Button(this, innerWidth / 2 - 400, innerHeight / 2 + 490,"MENU",()=>{
+            this.scene.restart('CreditsScene');
+            this.scene.switch('MenuScene');
+        });
+        this.startB = new Button(this, innerWidth / 2 + 65, innerHeight / 2 + 490,"START",()=>this.cameras.main.fadeOut(2000, 0, 0, 0));
+        //change scenes when faded
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.time.delayedCall(1000, () => {this.scene.start('GameScene',)})})
     }
     update() {
         //changing texts colors when buttons are pressed
@@ -136,11 +141,6 @@ export default class InstrScene extends Phaser.Scene {
         this.changeColor(this.keys.right.isDown, this.dButton);
         this.changeColor(this.keys.break.isDown, this.spaceButton);
         this.changeColor(this.keys.interact.isDown, this.eButton);
-        
-        //turn off button volume if sounds were muted in menu
-        if (!window.soundMode) {
-            this.menuB.isSoundOn = false;
-            this.startB.isSoundOn = false;
-        }
     }
+
 }

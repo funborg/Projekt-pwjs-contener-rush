@@ -30,6 +30,9 @@ export default class PreloadAssets extends Phaser.Scene {
         this.load.audio('bigCrash','sounds/bigCrash.mp3'); //big sound of hitting a stone or iceberg
     }
     create(){
+        //global ocean sound
+        this.game.oceanSound = this.sound.add('oceanSound', { loop: true,volume: 0.1 });
+        
         //starting with 'MenuScene'
         this.scene.start('MenuScene');
     }

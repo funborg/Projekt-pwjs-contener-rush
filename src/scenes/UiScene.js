@@ -20,12 +20,13 @@ create()
     //timer
     this.timer = new texttimer(this,50,40)
     //group of ship inventory slots 
+    let offest =[{x:-20,y:45},{x:20,y:45},{x:-20,y:-55},{x:20,y:-55}]
     this.slots=new Phaser.GameObjects.Group();
     for(let i=0;i<this.gamescene.ship.inventory.length;i++){
         this.slots.add(
         new slot(this,
-        this.game.scale.gameSize.width-60,
-        this.game.scale.gameSize.height-60-(100*i),
+        this.game.scale.gameSize.width/2+offest[i].x,
+        this.game.scale.gameSize.height/2+offest[i].y,
         i))
     }
     //compas arrows
@@ -46,7 +47,10 @@ update()
 {
     for(let i=0;i<this.compas.getLength();i++)
         this.compas.getFirstNth(i,true).compassUpdate(
-        this.gamescene.ship.x,this.gamescene.ship.y)
+            this.gamescene.ship.x,this.gamescene.ship.y)
+
+    for(let i=0;i<this.slots.getLength();i++)
+    this.slots.getFirstNth(i,true).positionUpdate(this.gamescene.ship.angle)
 }
 
 
@@ -54,9 +58,9 @@ inventoryUpdate(ID,inventory,color){
     if(inventory)
     for(let i=0;i<inventory.length;i++){
         if(ID==inventory[i]){//if there's item set visible and update color
-            this.slots.getFirstNth(i+1,true).setitem(color,1)
+            this.slots.getFirstNth(i+1,true).setitem(color,true)
         }else if(inventory[i]==-1){//if no item found set invisible and reset color 
-            this.slots.getFirstNth(i+1,true).setitem(0xFFFFFF,0)
+            this.slots.getFirstNth(i+1,true).setitem(0xFFFFFF,false)
         }
     }
 
@@ -66,19 +70,28 @@ inventoryUpdate(ID,inventory,color){
 class slot extends Phaser.GameObjects.Image{
 constructor(scene,x,y,ID)
 {
-    super(scene,x,y,AssetsKeys.TEXTURES,'slot',{key: ID})
-    scene.add.existing(this);
+    super(scene,x,y,'container',null,{key: ID})
+
     //ad container graphic and set invisble
-    this.item = new Phaser.GameObjects.Image(scene,x,y,'container')
-    this.item.setAlpha(0)
-    scene.add.existing(this.item);
+    this.setVisible(false)
+    scene.add.existing(this);
   
     
 }
-setitem(color,alpha)
+positionUpdate(angle){
+    let rotate=Phaser.Math.Angle.ShortestBetween(this.angle,angle)*Math.PI/180
+
+    Phaser.Math.RotateAround(this,
+        this.scene.game.scale.gameSize.width/2,
+        this.scene.game.scale.gameSize.height/2,
+        rotate)
+    this.setAngle(angle)
+        
+}
+setitem(color,vis)
 {
-    this.item.setTint(color)
-    this.item.setAlpha(alpha)
+    this.setTint(color)
+    this.setVisible(vis)
 }
 }
 class arrow extends Phaser.GameObjects.Graphics {
@@ -149,16 +162,17 @@ targetchange(inventory){
 }
 class texttimer extends Phaser.GameObjects.Text{
     constructor (scene,x,y){
-        super(scene,x,y,'time left ',{ font: '48px Arial', fill: '#0040FF' })
+        super(scene,x,y,'time left ',{ fontFamily: 'Stencil', fontSize: 64, color: '#085b80' })
+
     //time value in seconds
     this.timeleft= 180;
     this.updatetime();
 
     //timer background
     this.backgorund = new Phaser.GameObjects.Graphics(scene)
-    this.backgorund.fillStyle(0x000000);
-    this.backgorund.fillRect(this.x-15, this.y-15, this.width+30, this.height+30);
-    this.backgorund.fillStyle(0xff8b3d);
+    this.backgorund.lineStyle(15, 0x002a3d);
+    this.backgorund.strokeRect(this.x-15, this.y-15, this.width+30, this.height+30);
+    this.backgorund.fillStyle(0x076d8f,0.9);
     this.backgorund.fillRect(this.x-5, this.y-5, this.width+10, this.height+10);
 
     this.scene.add.existing(this.backgorund)
@@ -195,9 +209,12 @@ updatetime(){
         'time left '+Math.floor(this.timeleft/60).toString().padStart(2,'0')+
         ':'+(this.timeleft%60).toString().padStart(2,'0') );
     if(this.timeleft<60){
-        this.setColor("#ff0000")
+        this.setColor('#ba6102');
+        this.setStroke('#914103', 10);
     }else{
-        this.setColor("#0040FF")
+        
+        this.setColor('#085b80');
+        this.setStroke('#012636', 10);
     }
 }
 

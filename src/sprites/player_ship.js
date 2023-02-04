@@ -3,7 +3,7 @@ import AssetsKeys from '../helpers/AssetsKeys';
 import events from '../helpers/Events';
 
 
-export default class Player_ship extends Phaser.Physics.Matter.Image
+export default class Player_ship extends Phaser.Physics.Matter.Sprite
 {
     /**
      * @param {Phaser.Scene} scene 
@@ -11,7 +11,15 @@ export default class Player_ship extends Phaser.Physics.Matter.Image
     constructor(scene,x,y)
     {
         super(scene.matter.world, x, y,'ship');
-        scene.matter.body.setInertia(this.body, Infinity);
+        this.setBody({
+            type:'rectangle',
+            width:this.width*0.8,
+            height:this.height*0.8, 
+            
+        },{render: { sprite: { yOffset: 0.05 } }})
+        
+        
+        scene.matter.body.setInertia(this.body, Infinity);   
         //set bounce value
         this.setBounce(0.5);
         //player sway properties
@@ -36,7 +44,7 @@ export default class Player_ship extends Phaser.Physics.Matter.Image
         this.deliveredContainers = 0;
         //collision procedure
         this.setOnCollide(this.oncollision);
-        //bounce vector
+        //bounce vector 
         this.BounceVec = {x:0,y:0};
         this.bounced=false;
         //add this element
@@ -45,10 +53,52 @@ export default class Player_ship extends Phaser.Physics.Matter.Image
         this.scene.events.on('completed_delivery',()=>this.heal())
         this.scene.events.on('game_over',()=>{this.engine.step=0})
 
+        //config for ships waves creation
+        let emiterconfig ={
+            frequency:60,
+            alpha:{ start: 1, end: 0 },
+            scale:{ start: 1.2, end: 0.2 },
+            rotate: {onEmit: () => {
+                return Phaser.Math.Angle.WrapDegrees(this.angle-90+Math.random()*120-80)
+            }},
+            speed:{onEmit: () => {return 5+Math.abs(this.engine.value)*20}},
+
+            angle:{onEmit: () => {return Phaser.Math.Angle.WrapDegrees(this.angle-60)}},
+
+            lifespan:{onEmit: () => {return 200+Math.abs(this.engine.value)*100}},
+            x:{onEmit: () => {
+                if(this.engine.value>0)
+                    return this.getTopCenter().x- ( Math.sin(this.rotation)*50)
+                else
+                    return this.getBottomCenter().x+ ( Math.sin(this.rotation)*50)
+            }},
+            y:{onEmit: () => {
+                if(this.engine.value>0)
+                    return this.getTopCenter().y- ( -Math.cos(this.rotation)*50)
+                else
+                    return this.getBottomCenter().y+ ( -Math.cos(this.rotation)*50)
+            }},
+            blendMode: 'COLOR_BURN',
+            
+            
+        }
+        this.trailR = this.scene.foam.createEmitter(emiterconfig);
+        //offset angle for other side
+        emiterconfig.angle={onEmit: () => {
+            return Phaser.Math.Angle.WrapDegrees(this.angle+210)
+        }}
+        this.trailL = this.scene.foam.createEmitter(emiterconfig);
+
+        
+
+
+
+        //ship sounds
         this.moveSound = this.scene.sound.add('movingShip', { volume: 0.2 });
         this.staySound = this.scene.sound.add('stayingShip', {volume: 0.2 });
         this.sCrash = this.scene.sound.add('smallCrash', {volume: 0.2 });
         this.bCrash = this.scene.sound.add('bigCrash', {volume: 0.2 });
+        this.destruction = this.scene.sound.add('destroyShip', {volume: 0.2 });
 
     }
     //player update
@@ -105,23 +155,32 @@ export default class Player_ship extends Phaser.Physics.Matter.Image
         this.engine.value=  this.fade(this.engine.value ,0.995,this.engine.step/2)
         this.BounceVec.x=   this.fade(this.BounceVec.x  ,0.95, this.engine.step/2)
         this.BounceVec.y=   this.fade(this.BounceVec.y  ,0.95, this.engine.step/2)
-
-        if (window.soundMode)
-        if(keys.foward.isDown||keys.backward.isDown||
-            (keys.break.isDown&&this.engine.value>this.engine.step)){
-   
-                this.staySound.stop()
-                if(!this.moveSound.isPlaying)
-                    this.moveSound.play();
+        //sound effects
+        if (this.scene.game.isSoundOn)
+            //if any changes are made in engine values
+            if(keys.foward.isDown||keys.backward.isDown||
+                (keys.break.isDown&&this.engine.value>this.engine.step)){
+                    //stop passive noise and play engine noise
+                    this.staySound.stop()
+                    if(!this.moveSound.isPlaying)
+                        this.moveSound.play();
             }else{
+                //stop engine noise and play passive noise
                 this.moveSound.stop()
                     if(!this.staySound.isPlaying)
                         this.staySound.play()
                 
             }
+            
+
+            
+        
+
+        
 
 
     }
+    //values fade
     fade(currval,strength,min){
         //multiplies value by strength this function works only if 0<strength>1
         currval*=strength;
@@ -142,12 +201,16 @@ export default class Player_ship extends Phaser.Physics.Matter.Image
         this.gameObject.engine.value=0;
         //ignore collision damage if under speed      
         if(this.gameObject.body.speed>5){
-            this.gameObject.bCrash.play()
+            if (this.gameObject.scene.game.isSoundOn)
+                this.gameObject.bCrash.play()
             //health deduction is speed*2 rounded down
             this.gameObject.health-=Math.floor(this.gameObject.body.speed*2)
             //if ship health is reduced to zero or under trigger gameover sequence
-            if(this.gameObject.health<=0)
+            if(this.gameObject.health<=0){
                 this.gameObject.scene.events.emit(events.GAME_OVER)
+                if (this.gameObject.scene.game.isSoundOn)
+                    this.gameObject.destruction.play()
+            }
             //emit singal for health change with current health
             this.gameObject.scene.events.emit(events.HEALTH_CHANGE,this.gameObject.health)
             //destroys hit object if its type = rock
@@ -156,7 +219,9 @@ export default class Player_ship extends Phaser.Physics.Matter.Image
                     bodyB.gameObject.shipCollision();
                 
         }else{
-            this.gameObject.sCrash.play()
+            if (this.gameObject.scene.game.isSoundOn)
+                this.gameObject.sCrash.play()
+            
         }
 
     }

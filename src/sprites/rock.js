@@ -10,6 +10,12 @@ constructor(scene,x,y,chunk,ID)
     super(
     scene.matter.world, x, y,'iceBerg',null,{isStatic:true,key: ID}
     );
+    this.setScale(1.5)
+    this.setBody({
+        type:'circle',
+        radius: this.width*0.70
+        
+    },{isStatic:true,key: ID})
     //set meta data
     this.setData('type','rock');
     this.ID=ID;
@@ -18,6 +24,7 @@ constructor(scene,x,y,chunk,ID)
     //add rock to world
     scene.matter.world.scene.add.existing(this);
     //console.log(this.x,this.y,this.ID)
+    this.setTint(0x2F4F4F)
 }
 //collision with ship
 shipCollision(){
