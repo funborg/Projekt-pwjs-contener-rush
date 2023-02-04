@@ -10,7 +10,7 @@ export default class CreditsScene extends Phaser.Scene {
 
 create() {
     //adding background for menu
-    this.add.image(800, 600, 'bground').setOrigin(0.5);
+    this.add.image(960, 540, 'bground').setOrigin(0.5);
 
     //creating text (in this form it'll be easier to concatenate)
     var creators = "Game Creators :";
@@ -33,7 +33,8 @@ create() {
     this.text.setStroke('#002636', 10);
     this.text.setShadow(1, 2, '#000000');
 
-    this.mButton = new menuButton(this, 160, 1145);
+    //adding menu button
+    this.mButton = new menuButton(this, 1710, 1020);
 }
 
 update() {
