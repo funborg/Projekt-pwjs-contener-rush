@@ -158,8 +158,9 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         this.BounceVec.x=   this.fade(this.BounceVec.x  ,0.95, this.engine.step/2)
         this.BounceVec.y=   this.fade(this.BounceVec.y  ,0.95, this.engine.step/2)
         //sound effects
-        if (this.scene.game.isSoundOn)
+
             //if any changes are made in engine values
+        if (this.scene.game.isSoundOn&&this.health>=0)
             if(keys.foward.isDown||keys.backward.isDown||
                 (keys.break.isDown&&this.engine.value>this.engine.step)){
                     //stop passive noise and play engine noise
