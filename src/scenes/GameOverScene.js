@@ -34,7 +34,7 @@ export default class GameOverScene extends Phaser.Scene {
         );
 
         //adding 'GAME OVER' text 
-        this.gameOver = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.13, 'GAME OVER', { fontFamily: 'Stencil', fontSize: 64, color: '#085b80' }).setOrigin(0.5);
+        this.gameOver = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.13, 'GAME OVER', { fontFamily: 'Sitka_text', fontSize: 64, color: '#085b80' }).setOrigin(0.5);
         this.gameOver.setStroke('#012636', 15);
 
         //adding decorational line
@@ -43,7 +43,7 @@ export default class GameOverScene extends Phaser.Scene {
         graphics.strokeLineShape(line);
 
         //adding 'score' text 
-        this.score = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.22, 'TIME TOTAL:', { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        this.score = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.22, 'TIME TOTAL:', { fontFamily: 'Sitka_text', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
         this.score.setStroke('#012636', 10);
 
         //adding 'score' number (displaying it)
@@ -53,19 +53,19 @@ export default class GameOverScene extends Phaser.Scene {
         //seconds
         ':'+(Math.floor((this.data.time/10))%60).toString().padStart(2,'0')+
         //miliseconds
-        '.'+Math.floor(this.data.time%10), { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        '.'+Math.floor(this.data.time%10), { fontFamily: 'Sitka_text', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
         this.scoreNum.setStroke('#012636', 10);
 
         //adding text for the ammount of delivered containers 
-        this.containerCount = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.36, 'DELIVERED CONTAINERS:', { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        this.containerCount = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.36, 'DELIVERED CONTAINERS:', { fontFamily: 'Sitka_text', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
         this.containerCount.setStroke('#012636', 10);
 
         //adding the ammount of delivered containers number (displaying it)
-        this.containerCountNum = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.41, this.data.count, { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        this.containerCountNum = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.41, this.data.count, { fontFamily: 'Sitka_text', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
         this.containerCountNum.setStroke('#012636', 10);
 
         //adding text for average delivery time
-        this.avgTime = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.50, 'AVARGEGE DELIVERY TIME:', { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        this.avgTime = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.50, 'AVARGEGE DELIVERY TIME:', { fontFamily: 'Sitka_text', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
         this.avgTime.setStroke('#012636', 10);
 
         //adding average delivery time (displaying it)
@@ -76,7 +76,7 @@ export default class GameOverScene extends Phaser.Scene {
         ':'+(Math.floor((this.data.avg/10))%60).toString().padStart(2,'0')+
         //miliseconds
         '.'+Math.floor(this.data.avg%10)
-        , { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        , { fontFamily: 'Sitka_text', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
         this.avgTimeNum.setStroke('#012636', 10);
 
         //adding 2nd decorational line

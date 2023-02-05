@@ -3,7 +3,7 @@ import Phaser from 'phaser'
 export default class Button extends Phaser.GameObjects.Text {
     constructor(scene, x, y, name, onpointer) {
         //setting position and text of start button
-        super(scene, x, y, name, { fontFamily: 'Stencil', fontSize: 64, color: '#085b80' });
+        super(scene, x, y, name, { fontFamily: 'Sitka_text', fontSize: 64, color: '#085b80' });
         this.scene=scene
         this.setOrigin(0.5);
         this.setStroke('#012636', 10);

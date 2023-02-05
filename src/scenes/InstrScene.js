@@ -40,7 +40,7 @@ export default class InstrScene extends Phaser.Scene {
         );
 
         //adding 'HOW TO PLAY' text 
-        this.gameOver = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.13, 'HOW TO PLAY', { fontFamily: 'Stencil', fontSize: 64, color: '#085b80' }).setOrigin(0.5);
+        this.gameOver = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.13, 'HOW TO PLAY', { fontFamily: 'Sitka_text', fontSize: 64, color: '#085b80' }).setOrigin(0.5);
         this.gameOver.setStroke('#012636', 15);
 
         //adding decorational line
@@ -49,39 +49,39 @@ export default class InstrScene extends Phaser.Scene {
         graphics.strokeLineShape(lineOne);
 
         //adding 'MOVEMENT' text
-        this.movement = this.add.text(this.game.scale.width * 0.4, this.game.scale.height * 0.23, 'MOVEMENT', { fontFamily: 'Stencil', fontSize: 46, color: '#085b80' }).setOrigin(0.5);
+        this.movement = this.add.text(this.game.scale.width * 0.4, this.game.scale.height * 0.23, 'MOVEMENT', { fontFamily: 'Sitka_text', fontSize: 46, color: '#085b80' }).setOrigin(0.5);
         this.movement.setStroke('#012636', 10);
 
         //adding movement buttons text 
 
         //w
-        this.wButton = this.add.text(this.game.scale.width * 0.4, this.game.scale.height * 0.30, 'MOVE FORWARD : W', { fontFamily: 'Stencil', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
+        this.wButton = this.add.text(this.game.scale.width * 0.4, this.game.scale.height * 0.30, 'MOVE FORWARD : W', { fontFamily: 'Sitka_text', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
         this.wButton.setStroke('#012636', 6);
 
         //s
-        this.sButton = this.add.text(this.game.scale.width * 0.4, this.game.scale.height * 0.37, 'MOVE BACKWARD : S', { fontFamily: 'Stencil', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
+        this.sButton = this.add.text(this.game.scale.width * 0.4, this.game.scale.height * 0.37, 'MOVE BACKWARD : S', { fontFamily: 'Sitka_text', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
         this.sButton.setStroke('#012636', 6);
 
         //a
-        this.aButton = this.add.text(this.game.scale.width * 0.4, this.game.scale.height * 0.44, 'TURN LEFT : A', { fontFamily: 'Stencil', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
+        this.aButton = this.add.text(this.game.scale.width * 0.4, this.game.scale.height * 0.44, 'TURN LEFT : A', { fontFamily: 'Sitka_text', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
         this.aButton.setStroke('#012636', 6);
 
         //d
-        this.dButton = this.add.text(this.game.scale.width * 0.4, this.game.scale.height * 0.51, 'TURN RIGHT : D', { fontFamily: 'Stencil', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
+        this.dButton = this.add.text(this.game.scale.width * 0.4, this.game.scale.height * 0.51, 'TURN RIGHT : D', { fontFamily: 'Sitka_text', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
         this.dButton.setStroke('#012636', 6);
 
         //adding other buttons text
 
         //adding 'OTHER' text
-        this.other = this.add.text(this.game.scale.width * 0.625, this.game.scale.height * 0.23, 'OTHER', { fontFamily: 'Stencil', fontSize: 46, color: '#085b80' }).setOrigin(0.5);
+        this.other = this.add.text(this.game.scale.width * 0.625, this.game.scale.height * 0.23, 'OTHER', { fontFamily: 'Sitka_text', fontSize: 46, color: '#085b80' }).setOrigin(0.5);
         this.other.setStroke('#012636', 10);
 
         //space
-        this.spaceButton = this.add.text(this.game.scale.width * 0.625, this.game.scale.height * 0.30, 'BREAK : SPACE', { fontFamily: 'Stencil', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
+        this.spaceButton = this.add.text(this.game.scale.width * 0.625, this.game.scale.height * 0.30, 'BREAK : SPACE', { fontFamily: 'Sitka_text', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
         this.spaceButton.setStroke('#012636', 6);
 
         //e
-        this.eButton = this.add.text(this.game.scale.width * 0.625, this.game.scale.height * 0.37, 'INTERACT : E', { fontFamily: 'Stencil', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
+        this.eButton = this.add.text(this.game.scale.width * 0.625, this.game.scale.height * 0.37, 'INTERACT : E', { fontFamily: 'Sitka_text', fontSize: 24, color: '#085b80' }).setOrigin(0.5);
         this.eButton.setStroke('#012636', 6);
 
         //function that changes text color to give the player the possibility to check if he's pressing correct key
@@ -101,19 +101,19 @@ export default class InstrScene extends Phaser.Scene {
         graphics.strokeLineShape(lineTwo);
 
         //adding short instruction (in 4 different lines, because of better look) what the game is about
-        this.instruction1 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.59, 'Your job is to deliver containers from one port to another as dictated by arrows', { fontFamily: 'Stencil', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
+        this.instruction1 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.59, 'Your job is to deliver containers from one port to another as dictated by arrows', { fontFamily: 'Sitka_text', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
         this.instruction1.setStroke('#012636', 6);
 
-        this.instruction2 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.62, 'Avoid any rocks or other ports while keeping the time up!', { fontFamily: 'Stencil', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
+        this.instruction2 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.62, 'Avoid any rocks or other ports while keeping the time up!', { fontFamily: 'Sitka_text', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
         this.instruction2.setStroke('#012636', 6);
 
-        this.instruction3 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.65, 'Recive time bonus and repairs on succesful delivery!', { fontFamily: 'Stencil', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
+        this.instruction3 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.65, 'Recive time bonus and repairs on succesful delivery!', { fontFamily: 'Sitka_text', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
         this.instruction3.setStroke('#012636', 6);
         
-        this.instruction4 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.68, 'Game ends when ship is destroyed or time\'s up', { fontFamily: 'Stencil', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
+        this.instruction4 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.68, 'Game ends when ship is destroyed or time\'s up', { fontFamily: 'Sitka_text', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
         this.instruction4.setStroke('#012636', 6);
 
-        this.instruction5 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.71, 'See how long can you go!', { fontFamily: 'Stencil', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
+        this.instruction5 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.71, 'See how long can you go!', { fontFamily: 'Sitka_text', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
         this.instruction5.setStroke('#012636', 6);
 
         //adding 3rd decorational line

@@ -173,7 +173,7 @@ targetchange(inventory){
 //////////////////////////////////////////////////////////////////////////////////////////
 class texttimer extends Phaser.GameObjects.Text{
     constructor (scene,x,y){
-        super(scene,x,y,'time left ',{ fontFamily: 'Stencil', fontSize: 60, color: '#085b80' })
+        super(scene,x,y,'time left ',{ fontFamily: 'Sitka_text', fontSize: 60, color: '#085b80' })
 
     //time value in seconds
     this.timeleft= 180;
@@ -190,7 +190,7 @@ class texttimer extends Phaser.GameObjects.Text{
 
     //feedbakc for delivery
     this.feedbacktxt = new Phaser.GameObjects.Text
-    (scene,x+100,y+25,'+'+this.timebonus,{ fontFamily: 'Stencil', fontSize: 58, color: '#ba6102' })
+    (scene,x+100,y+25,'+'+this.timebonus,{ fontFamily: 'Sitka_text', fontSize: 58, color: '#ba6102' })
     this.feedbacktxt.setVisible(false)
     this.feedbacktxt.setStroke('#914103', 10);
 
@@ -278,7 +278,7 @@ constructor (scene,x,y,width,heigth,hp=100)
     
     //life text
     this.text=new Phaser.GameObjects.Text
-    (scene,x-100,y+this.h/2,'life :',{ fontFamily: 'Stencil', fontSize: 56, color: '#085b80' })
+    (scene,x-100,y+this.h/2,'life :',{ fontFamily: 'Sitka_text', fontSize: 56, color: '#085b80' })
 
     this.text.setColor('#085b80');
     this.text.setStroke('#012636', 10);
