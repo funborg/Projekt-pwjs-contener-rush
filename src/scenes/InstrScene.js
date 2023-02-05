@@ -128,10 +128,16 @@ export default class InstrScene extends Phaser.Scene {
             this.scene.restart('CreditsScene');
             this.scene.switch('MenuScene');
         });
-        this.startB = new Button(this, innerWidth / 2 + 180, innerHeight / 2 + 450,"START",()=>this.cameras.main.fadeOut(2000, 0, 0, 0));
+        this.startB = new Button(this, innerWidth / 2 + 180, innerHeight / 2 + 450,"START",()=>{
+           //fade out into game and remove interactive buttons
+            this.menuB.removeInteractive()
+            this.cameras.main.fadeOut(1000, 0, 0, 0)
+            this.startB.removeInteractive()
+
+        });
         //change scenes when faded
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.time.delayedCall(1000, () => {this.scene.start('GameScene',)})})
+            this.time.delayedCall(500, () => {this.scene.start('GameScene',) })})
     }
     update() {
         //changing texts colors when buttons are pressed

@@ -33,16 +33,17 @@ export default class MenuScene extends Phaser.Scene {
             yoyo: true,
             repeat: -1
         });
+        //ambiennce
         this.oceanSound = this.sound.add('oceanSound', { loop: true,volume: 0.1 });
-        
-        this.startButton = new Button(this, 960, 210,'START',()=>this.scene.switch('InstrScene'));
-        this.creditsButton = new Button(this, 960, 210,"CREDITS",()=>this.scene.switch('CreditsScene'));
-        this.soundButton = new Button(this, 210, 210,'SOUND: ON',this.toggleSound);
+        //add buttons
+        this.startButton = new Button(this, 960, 260,'START',()=>this.scene.switch('InstrScene'));
+        this.creditsButton = new Button(this, 960, 380,"CREDITS",()=>this.scene.switch('CreditsScene'));
+        this.soundButton = new Button(this, 210, 1020,'SOUND: ON',this.toggleSound);
         
         this.game.oceanSound.play()
     }
 
- 
+    //toggle suond on and of
     toggleSound() {
         if(this.game.isSoundOn){
             this.soundButton.setText("SOUND: OFF");

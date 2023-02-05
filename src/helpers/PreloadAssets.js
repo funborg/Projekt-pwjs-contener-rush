@@ -9,15 +9,15 @@ export default class PreloadAssets extends Phaser.Scene {
         this.load.image('bground', 'images/menu_bg.png'); //menu background
         this.load.image('mShip', 'images/menuShip.png'); //menu ship
         this.load.image('mContainer', 'images/menu_container.png'); //menu container
-        this.load.image('cliffBottom', 'images/cliff_bottom.png'); //bottom map border
-        this.load.image('cliffTop', 'images/cliff_top.png'); //top map border
-        this.load.image('cliffLeft', 'images/cliff_left.png'); //left map border
-        this.load.image('cliffRight', 'images/cliff_right.png'); //right map border
+        this.load.image('cliffside', 'images/cliff_bottom.png'); //side
+        this.load.image('cliffCorner', 'images/cliff_corner.png'); //corner
+        this.load.image('grass', 'images/grass.png'); //grass outside boundry
         this.load.image('container', 'images/container.png'); //game container
         this.load.image('iceBerg', 'images/ice_Berg.png'); //ice berg
         this.load.image('port', 'images/port.png'); //port
         this.load.image('rock', 'images/rock.png'); //rock
         this.load.image('seaFoam', 'images/sea_foam.png'); //sea foam
+        this.load.image('water', 'images/water.png'); //sea foam
         this.load.image('ship', 'images/ship.png'); //player ship
         this.load.audio('buttonClicked', 'sounds/buttonClicked.wav'); //clicked button sound
         this.load.audio('movingShip', 'sounds/MovingShipEngine.wav'); //ship engine while moving
@@ -32,7 +32,6 @@ export default class PreloadAssets extends Phaser.Scene {
     create(){
         //global ocean sound
         this.game.oceanSound = this.sound.add('oceanSound', { loop: true,volume: 0.1 });
-        
         //starting with 'MenuScene'
         this.scene.start('MenuScene');
     }

@@ -81,7 +81,7 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
                 else
                     return this.getBottomCenter().y+ ( -Math.cos(this.rotation)*50)
             }},
-            blendMode: 'COLOR_BURN',
+            blendMode: 'ADD',
             
             
         }
@@ -91,7 +91,7 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
             return Phaser.Math.Angle.WrapDegrees(this.angle+210)
         }}
         this.trailL = this.scene.foam.createEmitter(emiterconfig);
-
+        this.setDepth(2)
         
 
 
@@ -200,6 +200,7 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         if(this.gameObject.body.speed>5){
             if (this.gameObject.scene.game.isSoundOn)
                 this.gameObject.bCrash.play()
+  
             //health deduction is speed*2 rounded down
             this.gameObject.health -= Math.floor(this.gameObject.body.speed * 2)
             //if ship health is reduced to zero or under trigger gameover sequence
@@ -207,6 +208,14 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
                 this.gameObject.scene.events.emit(events.GAME_OVER)
                 if (this.gameObject.scene.game.isSoundOn)
                     this.gameObject.destruction.play()
+            }else{
+                this.gameObject.scene.tweens.add ({
+                    targets: this.gameObject,
+                    alpha:0.6,
+                    yoyo:true,
+                    duration: 300,
+                    ease: 'Bounce',
+                });  
             }
             //emit singal for health change with current health
             this.gameObject.scene.events.emit(events.HEALTH_CHANGE, this.gameObject.health)

@@ -14,6 +14,7 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     super(
         scene.matter.world, x, y,'port',null,{isStatic:true,key: ID}
     );
+    this.setScale(1.5)
     
     //set meta data
     this.setData('type','portA');
@@ -24,25 +25,29 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     this.ID= ID
     //occupied chunk
     this.chunk=chunk;
-    this.setAngle(-90)
+    this.setAngle(Phaser.Math.Angle.RandomDegrees())
     //interact area 
     //should be invisible in realese
+
     this.InteractArea=new Phaser.GameObjects.Rectangle
-    (this.scene,this.x,this.y,this.width*3,this.height*3,0x00ff00,0)
+    (this.scene,this.x,this.y,this.width*1.5+275,this.height*1.5+275,0x00ff00,0)
     //highlight for when ship is close by 
     this.highlight = new Phaser.GameObjects.Image(this.scene,this.x,this.y,'port')
-    this.highlight.setTintFill()
-    this.highlight.setAlpha(0.25)
+    this.highlight.setAlpha(0.75)
     this.highlight.setVisible(false)
     this.highlight.setAngle(this.angle)
+    this.highlight.setDepth(4)  
+    this.highlight.setScale(this.scale)
     //item
-    this.item = new Phaser.GameObjects.Image(scene,x,y-this.height,'container')
+    this.item = new Phaser.GameObjects.Image(scene,x,y-this.height*1.5,'container')
     this.item.setAngle(90)
     this.item.setAlpha(0.66)
-    this.item.setTint(this.color)     
+    this.item.setTint(this.color)   
+    this.setDepth(2)  
+    this.item.setDepth(2)  
     
 
-        this.itemfloat = this.scene.tweens.add({
+    this.itemfloat = this.scene.tweens.add({
             targets: this.item,
             scaleX: 1.1,
             scaleY: 1.1,
@@ -58,8 +63,9 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     scene.matter.world.scene.add.existing(this.InteractArea)
     scene.matter.world.scene.add.existing(this.item);
     scene.matter.world.scene.add.existing(this);
-    
     scene.matter.world.scene.add.existing(this.highlight)
+
+
     //listen for interaction
     this.scene.events.on('interact',(ship)=>this.interact(ship))
     //adding brother
@@ -76,12 +82,18 @@ addbrother(scene,color){
 }
 //check for ship in interact area
 isready(x,y){
-    if(this.InteractArea.getBounds().contains(x,y))
+    //highlight if ship is in interact area
+    if(this.InteractArea.getBounds().contains(x,y)){
+        this.highlight.setTintFill(0xC0C0C0)
         this.highlight.setVisible(true)
-    else
+    //else lowlight if doesn't have packege
+    }else if(!this.HasPackage){
+        this.highlight.setTintFill(0x000000)
+        this.highlight.setVisible(true)
+    //else no changes
+    }else{
         this.highlight.setVisible(false)
-    
-
+    }
 }
 
 fadeout()
@@ -92,8 +104,14 @@ this.scene.tweens.add ({
     alpha: 0,
     duration: 300,
     ease: 'Power2',
-    onComplete: () =>{this.relocate()} 
+    onComplete: () =>{     
+        this.setPosition(-700,-700)
+        this.InteractArea.setPosition(-700,-700)
+        this.item.setPosition(-700,-700)
+        this.highlight.setPosition(-700,-700)   
+        this.scene.time.delayedCall(5000, this.relocate,null,this)} 
 });
+
 
 }    
 //change location of it's objects,resets and reappear
@@ -108,6 +126,8 @@ relocate(){
     this.item.setPosition(p.x,p.y-this.height)          
     this.item.setVisible(!this.item.visible)
     this.item.setAlpha(0.66)
+    this.chunk.occupied=false
+    this.chunk=p.chunk
     this.HasPackage=!this.HasPackage
     this.satisfied=false
 }
@@ -115,7 +135,7 @@ interact(ship){
     //if ship is close by
 if(this.InteractArea.getBounds().contains(ship.x,ship.y)){
     
-    if(this.HasPackage){
+    if(this.HasPackage&&!this.satisfied){
         //place packege in first aviable place
         for(let i=0;i<ship.inventory.length;i++)
             if(ship.inventory[i]==-1){
@@ -159,29 +179,35 @@ constructor(scene,x,y,chunk,ID,color,port)
     this.item.setAlpha(0)
     this.scene.events.on('package_exchange',(ID)=>this.completeDelivery(ID))
     //rotate 180 degrees to differentiate from brother
-    this.setAngle(90)
-    
-    this.highlight.setAngle(this.angle)
+
 }
 //overwrite addbrother function to prevent stack overflow
 addbrother(){}
-relocate(){
-    super.relocate()
-    this.scene.events.emit(Events.PACKAGE_EXCHANGE,this.ID,this.scene.ship.inventory,this.color)
-
-        this.scene.events.emit(Events.COMPLETED_DELIVERY, this.ID)
-    }
     //fade out itself and  it's brother
     fadeout() {
         this.brother.fadeout()
         super.fadeout()
     }
-
+isready(x,y){
+    //lowligth if brother has packege
+    if(this.brother.HasPackage){
+        this.highlight.setTintFill(0x000000)
+        this.highlight.setVisible(true)
+    //else higlight if ship is in inreact area
+    }else if(this.InteractArea.getBounds().contains(x,y)){
+        this.highlight.setTintFill(0xC0C0C0)
+        this.highlight.setVisible(true)
+    }else{
+    //else no changes
+        this.highlight.setVisible(false)
+    } 
+}
 completeDelivery(ID){
     //check if delivery was completed
     if(this.ID===ID&&this.HasPackage){
         if(this.scene.game.isSoundOn)
             this.delivContain.play()
+        this.scene.events.emit(Events.COMPLETED_DELIVERY, this.ID)
         this.fadeout()
     }
 }  

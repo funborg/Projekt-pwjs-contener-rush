@@ -9,13 +9,17 @@ import GameOverScene from './scenes/GameOverScene'
 export default new Phaser.Game({
     type: Phaser.AUTO,
     width: 1920,
-    height: 1600,
+    height: 1080,
+
+    pixelArt:true,
+    
+    //turns off anti aliasing and pixel smoothing
     scale: {
-        mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
+        mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     fps: {
-        target: 60,
+        target: 60, 
         forceSetTimeOut: true
     },
     physics: {
@@ -24,7 +28,7 @@ export default new Phaser.Game({
             gravity: {
                 y: 0
             },
-            debug: true
+            debug: false
             
         }
     },

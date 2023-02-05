@@ -67,9 +67,14 @@ export default class GameOverScene extends Phaser.Scene {
 
         //creating menu & restart buttons 
         this.menuB = new Button(this, innerWidth / 2 - 250, innerHeight / 2 + 420,"MENU",()=>this.scene.switch('MenuScene'));
-        this.restartB = new Button(this, innerWidth / 2 + 180, innerHeight / 2 + 420,"RESTART",()=>this.cameras.main.fadeOut(2000, 0, 0, 0));
+        this.restartB = new Button(this, innerWidth / 2 + 180, innerHeight / 2 + 420,"RESTART",()=>{
+            //fade out into game and remove interactive buttons
+            this.cameras.main.fadeOut(1000, 0, 0, 0)
+            this.menuB.removeInteractive()
+            this.restartB.removeInteractive()
+        });
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.time.delayedCall(1000, () => {this.scene.start('GameScene',)})})
+            this.time.delayedCall(5000, () => {this.scene.start('GameScene',)})})
     
     }
 

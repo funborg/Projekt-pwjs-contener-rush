@@ -39,11 +39,13 @@ init()
     {
         red:    0xFF0000,
         blue:   0x0000FF,
-        green:  0x00FF00,
+        green:  0x008000,
         yellow: 0xFFFF00,
         purple: 0xFF00FF,
-        aqua:   0x00FFFF,
-        white:  0xFFFFFF
+        lightB: 0x2973B8,
+        white:  0xFFFFFF,
+        hotpink: 0xFF69B4,
+       
     }
 }  
 create()
@@ -59,10 +61,13 @@ create()
         this.boundry.Width,
         this.boundry.Height
     );
+
+
+    
     
     //particle emitter
     this.foam = this.add.particles('seaFoam') 
-
+    this.foam.setDepth(1)
     //create ship in the middle
     //play area is divide into 200x200 squares each 
     //square can contain only one object
@@ -73,15 +78,127 @@ create()
             this.chunks.add(new chunk(this,k,j,i,this.ChunkSize))
             
             k++}
+    k=0
+    //decorative to fill sides with water not for use in game
+    this.decorchunks= new Phaser.GameObjects.Group();
+    for(let i=-this.ChunkSize;i<this.boundry.Height;i+=this.ChunkSize){
+            this.decorchunks.add(new chunk(this,k,i,-this.ChunkSize,this.ChunkSize))
+            k++
+    }
+    for(let i=-this.ChunkSize;i<this.boundry.Height;i+=this.ChunkSize){
+            this.decorchunks.add(new chunk(this,k,-this.ChunkSize,i,this.ChunkSize))
+            k++
+    }
+
+
+
+    //cliffs border
+    this.cliffs= new Phaser.GameObjects.Group(this)
+    for(let i=0;i<this.boundry.Height;i+=this.ChunkSize){
+        this.cliffs.add(
+            new Phaser.GameObjects.Image
+            (this,
+            0-this.ChunkSize/2,
+            i+this.ChunkSize/2,
+            'cliffside'),true)
+
+            
+        this.cliffs.add(
+            new Phaser.GameObjects.Image
+            (this,
+            this.boundry.Width+this.ChunkSize/2,
+            i+this.ChunkSize/2,
+            'cliffside'),true)
+        this.cliffs.getLast(true).setAngle(180)
+
+
+        this.cliffs.add(
+            new Phaser.GameObjects.Image
+            (this,
+            i+this.ChunkSize/2,
+            0-this.ChunkSize/2,
+            'cliffside'),true)
+        this.cliffs.getLast(true).setAngle(90)
+
+
+        this.cliffs.add(
+            new Phaser.GameObjects.Image(
+            this,
+            i+this.ChunkSize/2,
+            this.boundry.Height+this.ChunkSize/2,
+            'cliffside'),true)
+        this.cliffs.getLast(true).setAngle(-90)
+    }
+
+    //cliffs corners
+    this.cliffs.add(
+        new Phaser.GameObjects.Image
+            (this,
+            this.boundry.Width+this.ChunkSize/2,
+            0-this.ChunkSize/2,
+            'cliffCorner'),true) 
+
+
+
+    this.cliffs.add(
+        new Phaser.GameObjects.Image
+            (this,
+            0-this.ChunkSize/2,
+            this.boundry.Height+this.ChunkSize/2,
+            'cliffCorner'),true) 
+             
+    this.cliffs.getLast(true).setAngle(180)  
+ 
+
+    this.cliffs.add(
+        new Phaser.GameObjects.Image
+            (this,
+            0-this.ChunkSize/2,
+            0-this.ChunkSize/2,
+            'cliffCorner'),true)
+                
+    this.cliffs.getLast(true).setAngle(-90)  
+
+        
+    this.cliffs.add(
+        new Phaser.GameObjects.Image
+            (this,
+            this.boundry.Width+this.ChunkSize/2,
+            this.boundry.Height+this.ChunkSize/2,
+            'cliffCorner'),true) 
+            
+    this.cliffs.getLast(true).setAngle(90) 
+    //cliffs outside
+    let rangle=[0,90,-90,180] 
+    for(let i=-(this.ChunkSize*3);i<this.boundry.Height+(this.ChunkSize*3);i+=this.ChunkSize)
+        for(let j=-(this.ChunkSize*3);j<this.boundry.Width+(this.ChunkSize*3);j+=this.ChunkSize)
+            if((i<-this.ChunkSize||i>this.boundry.Height)||(j<-this.ChunkSize||j>this.boundry.Width)){
+                this.cliffs.add(        
+                    new Phaser.GameObjects.Image
+                    (this,
+                    j+this.ChunkSize/2,
+                    i+this.ChunkSize/2,
+                    'grass'),true)
+                this.cliffs.getLast(true).setAngle(-90)
+            }
+        
     
+
+
+
+
+
+    //scale cliffs tile to chunk size
+    this.cliffs.children.each((G)=>G.setScale(this.ChunkSize/G.width))   
+    this.cliffs.setDepth(2)
         
 
 
     //debug lines TO BE REMOVED
-    for(let i=0;i<this.boundry.Height;i+=this.ChunkSize)
-        this.add.line(0,0,0,i,this.boundry.Width*2,i,0x000000);
-    for(let i=0;i<this.boundry.Width;i+=this.ChunkSize)
-       this.add.line(0,0,i,0,i,this.boundry.Height*2,0x000000);       
+    //for(let i=0;i<this.boundry.Height;i+=this.ChunkSize)
+     //   this.add.line(0,0,0,i,this.boundry.Width*2,i,0x000000);
+    //for(let i=0;i<this.boundry.Width;i+=this.ChunkSize)
+     //  this.add.line(0,0,i,0,i,this.boundry.Height*2,0x000000);       
 
     this.ship = new Player_ship(this,this.boundry.Width/2,this.boundry.Height/2);
 
@@ -96,11 +213,11 @@ create()
 
     //group containing all ports
     this.ports= new Phaser.GameObjects.Group();
-    for(let i=0;i<7;i++){
+    for(let i=0;i<8;i++){
         let p =  this.place(40)
         this.ports.add(
         new port( this,p.x,p.y,p.chunk,i,
-        this.colorsarr[Object.keys(this.colorsarr)[i%7]]))
+        this.colorsarr[Object.keys(this.colorsarr)[i%Object.keys(this.colorsarr).length]]))
     }
     //method of accesing specific rock/port by id from game scene
     //this.rocks.getFirstNth(id,true)
@@ -141,17 +258,17 @@ create()
 		this.time.delayedCall(1000, () => {this.scene.start('GameOverScene',)})})
 
  
-    //wave on the ocean
+    //waves on the ocean
     this.waves = this.foam.createEmitter({
         frequency: 600,
         quantity: 20,
-        rotate:{min:-20,max:-70},
+        rotate:{min:-170,max:-130},
         scale:{start:0,end:1.5,ease:'Back'},
-        alpha:{start:0.8,end:0,ease:'Sine'},
+        alpha:{start:1,end:0,ease:'Cubic.easeIn'},
         lifespan:  {min:1000,max:5000},
         x:         {min:0,   max:this.boundry.Width},
         y:         {min:0,   max:this.boundry.Height},
-        speedX:      -200,
+        speedX:      200,
         speedY:      200,
         
     });
@@ -197,13 +314,25 @@ place(frame=0,limit=5000){
 class chunk extends Phaser.GameObjects.Zone{
     constructor(scene,ID,x,y,size)
     { 
-
     super(scene,x,y,size,size)
     this.size=size
     this.occupied=false
     this.ID=ID
 
+    //water animation
+    this.water= new Phaser.GameObjects.Image(scene,x+this.size/2,y+this.size/2,'water')
+    this.water.setScale(this.size/this.water.width)
+    scene.add.existing(this.water);
+    this.water.setDepth(0)
+    this.scene.add.tween({
+        targets:this.water,
+        x:this.water.x+this.size,
+        y:this.water.y+this.size,
+        repeat:-1,
+        duration: 5000,
+    })
     }
+    
     //return random coordinates and this object 
     getcoor(frame=0){
         return {x: this.x+Math.floor(Math.random()*(this.size-frame*2+1))+frame,
