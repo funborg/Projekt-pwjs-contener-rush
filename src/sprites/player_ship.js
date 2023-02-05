@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import AssetsKeys from '../helpers/AssetsKeys';
 import events from '../helpers/Events';
 
 
@@ -18,7 +17,7 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
             
         },{render: { sprite: { yOffset: 0.05 } }})
         
-        
+        this.texture.setFilter(Phaser.ScaleModes.NEAREST)
         scene.matter.body.setInertia(this.body, Infinity);   
         //set bounce value
         this.setBounce(0.5);
@@ -54,7 +53,11 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
         scene.matter.world.scene.add.existing(this);
         //heal upon succesful delivery
         this.scene.events.on('completed_delivery',()=>this.heal())
-        this.scene.events.on('game_over',()=>{this.engine.step=0})
+        //turn controlls off on game over
+        this.scene.events.on('game_over',()=>{
+        this.engine.step=0
+        this.helm.step=0
+    })
 
         //config for ships waves creation
         let emiterconfig ={

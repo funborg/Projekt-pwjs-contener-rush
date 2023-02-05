@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import AssetsKeys from '../helpers/AssetsKeys';
 import events from '../helpers/Events';
 export default class UiScene extends Phaser.Scene
 {
@@ -79,7 +78,7 @@ constructor(scene,x,y,ID)
     //ad container graphic and set invisble
     this.setVisible(false)
     scene.add.existing(this);
-    
+    this.texture.setFilter(Phaser.ScaleModes.NEAREST)
   
     
     
@@ -162,10 +161,10 @@ targetchange(inventory){
     //else change target to main port
     for (let i=0;i<inventory.length;i++)
         if(inventory[i]==this.ID){
-            this.target={x:this.destination.brother.highlight.x,y:this.destination.brother.highlight.y}
+            this.target={x:this.destination.brother.x,y:this.destination.brother.y}
             break;
         }else{
-            this.target={x:this.destination.highlight.x,y:this.destination.highlight.y}
+            this.target={x:this.destination.x,y:this.destination.y}
 
     }   
 

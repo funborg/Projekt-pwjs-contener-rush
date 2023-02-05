@@ -8,15 +8,14 @@ export default class GameOverScene extends Phaser.Scene {
         super({ key: 'GameOverScene' }, "game");
     }
     init(data){
-        console.log(data)
         this.data=data
     }
 
     create() {
         this.cameras.main.fadeIn(1000)
         //adding background
-        this.add.image(960, 540, 'bground').setOrigin(0.5);
-
+        this.bg=this.add.image(960, 540, 'bground').setOrigin(0.5);
+        this.bg.texture.setFilter(Phaser.ScaleModes.NEAREST)
         //creating rounded, filled rectangle (as a background for text, buttons & statistics) 
         this.mRect = this.add.graphics();
         this.mRect.lineStyle(20, 0x012636);
@@ -92,7 +91,7 @@ export default class GameOverScene extends Phaser.Scene {
 
         });
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.time.delayedCall(500, () => { this.scene.restart('GameScene') })})
+            this.time.delayedCall(500, () => { this.scene.start('GameScene') })})
     
     }
 

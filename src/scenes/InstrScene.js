@@ -20,8 +20,8 @@ export default class InstrScene extends Phaser.Scene {
     create() {
 
         //adding background
-        this.add.image(960, 540, 'bground').setOrigin(0.5);
-
+        this.bg=this.add.image(960, 540, 'bground').setOrigin(0.5);
+        this.bg.texture.setFilter(Phaser.ScaleModes.NEAREST)
         //creating rounded, filled rectangle (as a background for text, buttons & statistics) 
         this.mRect = this.add.graphics();
         this.mRect.lineStyle(20, 0x012636);

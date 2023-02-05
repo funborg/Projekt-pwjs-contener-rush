@@ -1,6 +1,5 @@
 import { homedir } from 'os';
 import Phaser, { GameObjects, Tweens } from 'phaser'
-import AssetsKeys from '../helpers/AssetsKeys';
 import Events from '../helpers/Events';
 
 //port origin
@@ -28,7 +27,8 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     this.setAngle(Phaser.Math.Angle.RandomDegrees())
     //interact area 
     //should be invisible in realese
-
+    
+    
     this.InteractArea=new Phaser.GameObjects.Rectangle
     (this.scene,this.x,this.y,this.width*1.5+275,this.height*1.5+275,0x00ff00,0)
     //highlight for when ship is close by 
@@ -43,7 +43,7 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     this.item.setAngle(90)
     this.item.setAlpha(0.66)
     this.item.setTint(this.color)   
-    this.setDepth(2)  
+    this.setDepth(5)  
     this.item.setDepth(2)  
     
 
@@ -59,7 +59,8 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
             repeat: -1
 
     })
-
+    this.texture.setFilter(Phaser.ScaleModes.NEAREST)
+    this.item.texture.setFilter(Phaser.ScaleModes.NEAREST)
     scene.matter.world.scene.add.existing(this.InteractArea)
     scene.matter.world.scene.add.existing(this.item);
     scene.matter.world.scene.add.existing(this);
@@ -130,7 +131,7 @@ relocate(){
     this.InteractArea.setAlpha(1)
     this.highlight.setPosition(p.x,p.y)
     this.highlight.setAlpha(0.25)
-    this.item.setPosition(p.x,p.y-this.height)          
+    this.item.setPosition(p.x,p.y-this.height*1.5)          
     this.item.setVisible(!this.item.visible)
     this.item.setAlpha(0.66)
     this.chunk.occupied=false

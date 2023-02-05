@@ -10,8 +10,8 @@ export default class MenuScene extends Phaser.Scene {
     create() {
 
         //adding background for menu
-        this.add.image(960, 540, 'bground').setOrigin(0.5);
-
+        this.bg=this.add.image(960, 540, 'bground').setOrigin(0.5);
+        this.bg.texture.setFilter(Phaser.ScaleModes.NEAREST)
         //creating game title
         this.gameTitle = this.add.text(960, 120, 'CONTAINER RUSH', { fontFamily: 'Stencil', fontSize: 100, color: '#046187' }).setOrigin(0.5);
         this.gameTitle.setStroke('#002636', 18);
@@ -19,10 +19,10 @@ export default class MenuScene extends Phaser.Scene {
         //creating start & end point for ship
         var startP = -200;
         var stopP = this.game.scale.width+200;
-
+        
         //adding a ship
         this.mShip = this.add.sprite(startP, 540, 'mShip').setOrigin(0.5);
-
+        this.mShip.texture.setFilter(Phaser.ScaleModes.NEAREST)
         //creating a ship movement from start point to stop point
         var shipTween = this.tweens.add({
             targets: this.mShip,

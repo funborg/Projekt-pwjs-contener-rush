@@ -1,6 +1,5 @@
 import Phaser, { Structs } from 'phaser'
 import Player_ship from '../sprites/player_ship';
-import AssetsKeys from '../helpers/AssetsKeys';
 import rock from '../sprites/rock';
 import port from '../sprites/ports';
 import events from '../helpers/Events';
@@ -16,6 +15,7 @@ constructor()
 init()
 {
    
+
 //keyboard inputs
 	this.keys = this.input.keyboard.addKeys
     ({
@@ -190,7 +190,8 @@ create()
 
 
     //scale cliffs tile to chunk size
-    this.cliffs.children.each((G)=>G.setScale(this.ChunkSize/G.width))   
+    this.cliffs.children.each((G)=>{G.setScale(this.ChunkSize/G.width)
+    G.texture.setFilter(Phaser.ScaleModes.NEAREST)})   
     this.cliffs.setDepth(2)
         
 
@@ -204,7 +205,7 @@ create()
     this.ship = new Player_ship(this,this.boundry.Width/2,this.boundry.Height/2);
 
     //group containing all rocks
-    this.rocks= new Phaser.GameObjects.Group();
+    this.rocks= new Phaser.GameObjects.Group(this);
     for(let i=0;i<10;i++){
     let p =  this.place(40)
     this.rocks.add(new rock(this,p.x,p.y,p.chunk,i))
@@ -213,7 +214,7 @@ create()
 
 
     //group containing all ports
-    this.ports= new Phaser.GameObjects.Group();
+    this.ports= new Phaser.GameObjects.Group(this);
     for(let i=0;i<8;i++){
         let p =  this.place(40)
         this.ports.add(
@@ -238,6 +239,7 @@ create()
     
     //game over sequence
     this.events.on('game_over',()=>{
+        
         //if ship was destroyed fade it out
         if(this.ship.health<=0){
         this.ship.trailL.stop();
@@ -259,7 +261,7 @@ create()
     this.gametime=0
     this.events.on('completed_delivery',(ID,time)=>{
         this.delivcompleted++
-        //add to avarege
+        //add measured time to avarege time
         this.avgtime+=(time-this.avgtime)/this.delivcompleted
     })
     this.clock = this.time.addEvent({
@@ -271,6 +273,13 @@ create()
     //on camera fade out change scene
 	this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
 		this.time.delayedCall(1000, () => {
+        //turns off listiners
+        this.events.off('completed_delivery');
+        this.events.off('interact');
+        this.events.off('package_exchange');
+        this.events.off('completed_delivery');
+        this.events.off('game_over');
+
         this.scene.start('GameOverScene',{
             avg:this.avgtime,
             count:this.delivcompleted,
@@ -292,7 +301,7 @@ create()
         speedY:      200,
         
     });
-    console.log()
+    this.waves.texture.setFilter(Phaser.ScaleModes.NEAREST)
     this.cameras.main.fadeIn(1000)
 }
 update()
@@ -327,6 +336,7 @@ place(frame=0,limit=5000){
     }while(rchunk.occupied||cam.contains(rchunk.x,rchunk.y))
     rchunk.occupied=true
     return rchunk.getcoor(frame)
+
 }
 
 
@@ -345,8 +355,10 @@ class chunk extends Phaser.GameObjects.Zone{
 
     //water animation
     this.water= new Phaser.GameObjects.Image(scene,x+this.size/2,y+this.size/2,'water')
+
     this.water.setScale(this.size/this.water.width)
     scene.add.existing(this.water);
+    this.water.texture.setFilter(Phaser.ScaleModes.NEAREST)
     this.water.setDepth(0)
     this.scene.add.tween({
         targets:this.water,

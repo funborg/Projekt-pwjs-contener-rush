@@ -1,5 +1,4 @@
 import Phaser, { Tweens } from 'phaser'
-import AssetsKeys from '../helpers/AssetsKeys';
 
 export default class rock extends Phaser.Physics.Matter.Image {
     /**
@@ -25,6 +24,8 @@ constructor(scene,x,y,chunk,ID)
     scene.matter.world.scene.add.existing(this);
     //console.log(this.x,this.y,this.ID)
     this.setTint(0x2F4F4F)
+    this.texture.setFilter(Phaser.ScaleModes.NEAREST)
+    this.setAngle(Phaser.Math.Angle.RandomDegrees())
 }
 //collision with ship
 shipCollision(){
