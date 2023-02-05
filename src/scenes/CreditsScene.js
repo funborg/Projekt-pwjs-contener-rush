@@ -10,7 +10,7 @@ export default class CreditsScene extends Phaser.Scene {
 
 create() {
     //adding background for menu
-    this.add.image(960, 540, 'bground').setOrigin(0.5);
+    this.add.image(this.game.scale.width / 2, this.game.scale.height / 2, 'bground').setOrigin(0.5);
 
     //creating text (in this form it'll be easier to concatenate)
     var creators = "Game Creators :";
@@ -24,17 +24,16 @@ create() {
     var sounds = "Music & Sound Effects :";
     var soundsSrc = "mixkit.co/free-sound-effects\nzapsplat.com";
 
-
     //defining initial 'y' position of text 
-    this.yPos = 1750;
+    this.yPos = this.game.scale.height;
 
     //concatenating and displaying previously created text (and modyfying it)
-    this.text = this.add.text(innerWidth/2+50, this.yPos, creators+'\n'+creator1+'\n'+creator2+'\n\n'+concept+'\n'+creator1+'\n\n'+textures+'\n'+creator2+'\n\n'+code+'\n'+creator1+'\n'+creator2+'\n\n'+menuBG+'\n'+menuBGsrc+'\n\n'+sounds+'\n'+soundsSrc, { fontFamily: 'Tw Cen MT Condensed Extra Bold', fontSize: 42, color: '#046187' }).setOrigin(0.5);
+    this.text = this.add.text(this.game.scale.width * 0.5, this.yPos, creators+'\n'+creator1+'\n'+creator2+'\n\n'+concept+'\n'+creator1+'\n\n'+textures+'\n'+creator2+'\n\n'+code+'\n'+creator1+'\n'+creator2+'\n\n'+menuBG+'\n'+menuBGsrc+'\n\n'+sounds+'\n'+soundsSrc, { fontFamily: 'Tw Cen MT Condensed Extra Bold', fontSize: 42, color: '#046187' }).setOrigin(0.5);
     this.text.setStroke('#002636', 10);
     this.text.setShadow(1, 2, '#000000');
 
     //adding menu button
-    this.mButton = new Button(this, 1710, 1020,'MENU',this.switch);
+    this.mButton = new Button(this, this.game.scale.width * 0.94, this.game.scale.height * 0.95,'MENU',this.switch);
 }
 
 update() {
@@ -43,7 +42,7 @@ update() {
 
     //reset the 'y' position of text after it disappear behind the top border of screen and switch scene to 'MenuScene'
     if (this.text.y < -560) {
-        this.text.y = this.yPos;
+        this.text.y = this.game.scale.height;
         this.scene.switch('MenuScene');
     }
 
