@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import events from '../helpers/Events';
+import events from '../helpers/Events.js';
 export default class UiScene extends Phaser.Scene
 {
 constructor()
@@ -43,7 +43,7 @@ create()
     }
     //inventory update upon event
     this.gamescene.events.on('package_exchange',(ID,inventory,color)=>this.inventoryUpdate(ID,inventory,color))
-    
+    this.cameras.main.fadeIn(1000)   
 }
 update()
 {

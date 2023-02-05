@@ -1,6 +1,5 @@
-import { homedir } from 'os';
-import Phaser, { GameObjects, Tweens } from 'phaser'
-import Events from '../helpers/Events';
+import Phaser from 'phaser'
+import Events from '../helpers/Events.js';
 
 //port origin
 export default class port extends Phaser.Physics.Matter.Image

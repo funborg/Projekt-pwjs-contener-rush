@@ -1,4 +1,4 @@
-import Phaser, { Tweens } from 'phaser'
+import Phaser from 'phaser'
 
 export default class rock extends Phaser.Physics.Matter.Image {
     /**

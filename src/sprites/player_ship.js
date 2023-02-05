@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import events from '../helpers/Events';
+import events from '../helpers/Events.js';
 
 
 export default class Player_ship extends Phaser.Physics.Matter.Sprite

@@ -1,10 +1,10 @@
-import GameScene from './scenes/GameScene'
-import UiScene from './scenes/UiScene'
-import PreloadAssets from './helpers/PreloadAssets'
-import MenuScene from './scenes/MenuScene'
-import InstrScene from './scenes/InstrScene'
-import CreditsScene from './scenes/CreditsScene'
-import GameOverScene from './scenes/GameOverScene'
+import GameScene from './scenes/GameScene.js'
+import UiScene from './scenes/UiScene.js'
+import PreloadAssets from './helpers/PreloadAssets.js'
+import MenuScene from './scenes/MenuScene.js'
+import InstrScene from './scenes/InstrScene.js'
+import CreditsScene from './scenes/CreditsScene.js'
+import GameOverScene from './scenes/GameOverScene.js'
 
 export default new Phaser.Game({
     type: Phaser.AUTO,

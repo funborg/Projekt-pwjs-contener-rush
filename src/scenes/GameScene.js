@@ -1,10 +1,7 @@
-import Phaser, { Structs } from 'phaser'
-import Player_ship from '../sprites/player_ship';
-import rock from '../sprites/rock';
-import port from '../sprites/ports';
-import events from '../helpers/Events';
-import MenuScene from './MenuScene';
-import GameOverScene from './GameOverScene';
+import Phaser from 'phaser'
+import Player_ship from '../sprites/player_ship.js';
+import rock from '../sprites/rock.js';
+import port from '../sprites/ports.js';
 
 export default class GameScene extends Phaser.Scene
 {

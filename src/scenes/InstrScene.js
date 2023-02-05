@@ -1,6 +1,5 @@
 import Phaser from 'phaser'
-import Button from '../sprites/Button'
-import MenuScene from './MenuScene'
+import Button from '../sprites/Button.js'
 
 export default class InstrScene extends Phaser.Scene {
     constructor() {
