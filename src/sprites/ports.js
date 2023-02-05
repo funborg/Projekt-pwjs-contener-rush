@@ -33,7 +33,6 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     (this.scene,this.x,this.y,this.width*1.5+275,this.height*1.5+275,0x00ff00,0)
     //highlight for when ship is close by 
     this.highlight = new Phaser.GameObjects.Image(this.scene,this.x,this.y,'port')
-    this.highlight.setAlpha(0.75)
     this.highlight.setVisible(false)
     this.highlight.setAngle(this.angle)
     this.highlight.setDepth(4)  
@@ -90,13 +89,15 @@ addbrother(scene,color){
 }
 //check for ship in interact area           
 isready(x,y){
-    //highlight if ship is in interact area
-    if(this.InteractArea.getBounds().contains(x,y)){
-        this.highlight.setTintFill(0xC0C0C0)
-        this.highlight.setVisible(true)
-    //else lowlight if doesn't have packege
-    }else if(!this.HasPackage){
+    //lowlight if doesn't have packege  
+    if(!this.HasPackage){
+        this.highlight.setAlpha(0.75)
         this.highlight.setTintFill(0x000000)
+        this.highlight.setVisible(true)
+    //else lowlight if ship is in interact area
+    }else if(this.InteractArea.getBounds().contains(x,y)){
+        this.highlight.setAlpha(0.5)
+        this.highlight.setTintFill(0xC0C0C0)
         this.highlight.setVisible(true)
     //else no changes
     }else{
@@ -211,10 +212,13 @@ addbrother(){}
 isready(x,y){
     //lowligth if brother has packege
     if(this.brother.HasPackage){
+        
+        this.highlight.setAlpha(0.75)
         this.highlight.setTintFill(0x000000)
         this.highlight.setVisible(true)
     //else higlight if ship is in inreact area
     }else if(this.InteractArea.getBounds().contains(x,y)){
+        this.highlight.setAlpha(0.5)
         this.highlight.setTintFill(0xC0C0C0)
         this.highlight.setVisible(true)
     }else{
