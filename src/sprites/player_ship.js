@@ -206,11 +206,15 @@ export default class Player_ship extends Phaser.Physics.Matter.Sprite
   
             //health deduction is speed*2 rounded down
             this.gameObject.health -= Math.floor(this.gameObject.body.speed * 2)
+
             //if ship health is reduced to zero or under trigger gameover sequence
             if(this.gameObject.health<=0){
                 this.gameObject.scene.events.emit(events.GAME_OVER)
-                if (this.gameObject.scene.game.isSoundOn)
+                if (this.gameObject.scene.game.isSoundOn){
                     this.gameObject.destruction.play()
+                    this.gameObject.moveSound.stop()
+                    this.gameObject.staySound.stop()
+                }
             }else{
                 this.gameObject.scene.tweens.add ({
                     targets: this.gameObject,

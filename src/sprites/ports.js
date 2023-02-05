@@ -43,7 +43,7 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     this.item.setAngle(90)
     this.item.setAlpha(0.66)
     this.item.setTint(this.color)   
-    this.setDepth(5)  
+    this.item.setDepth(2)  
     this.item.setDepth(2)  
     
 
