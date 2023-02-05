@@ -47,6 +47,7 @@ init()
         hotpink: 0xFF69B4,
        
     }
+    
 }  
 create()
 {
@@ -253,9 +254,28 @@ create()
         this.cameras.main.fadeOut(2000, 0, 0, 0)})
         
     })
+    this.avgtime=0
+    this.delivcompleted=0
+    this.gametime=0
+    this.events.on('completed_delivery',(ID,time)=>{
+        this.delivcompleted++
+        //add to avarege
+        this.avgtime+=(time-this.avgtime)/this.delivcompleted
+    })
+    this.clock = this.time.addEvent({
+        delay:100,
+        repeat:1,
+        callback:()=>{this.gametime++},
+        loop:true,
+    })
     //on camera fade out change scene
 	this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-		this.time.delayedCall(1000, () => {this.scene.start('GameOverScene',)})})
+		this.time.delayedCall(1000, () => {
+        this.scene.start('GameOverScene',{
+            avg:this.avgtime,
+            count:this.delivcompleted,
+            time:this.gametime})
+        })})
 
  
     //waves on the ocean
@@ -272,7 +292,7 @@ create()
         speedY:      200,
         
     });
-    
+    console.log()
     this.cameras.main.fadeIn(1000)
 }
 update()
@@ -308,6 +328,10 @@ place(frame=0,limit=5000){
     rchunk.occupied=true
     return rchunk.getcoor(frame)
 }
+
+
+
+
 
 }
 //chunk object for tracking objects located inside of it

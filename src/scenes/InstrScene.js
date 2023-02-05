@@ -30,7 +30,7 @@ export default class InstrScene extends Phaser.Scene {
         this.mRect.fillRoundedRect(innerWidth / 4, innerHeight / 4 - 150, 900, 900);
 
         //adding 'GAME OVER' text 
-        this.gameOver = this.add.text(innerHeight, innerWidth / 4 - 330, 'HOW TO PLAY', { fontFamily: 'Stencil', fontSize: 64, color: '#085b80' }).setOrigin(0.5);
+        this.gameOver = this.add.text(this.game.scale.width *0.5, this.game.scale.height *0.15, 'HOW TO PLAY', { fontFamily: 'Stencil', fontSize: 64, color: '#085b80' }).setOrigin(0.5);
         this.gameOver.setStroke('#133b54', 15);
         this.gameOver.setShadow(1, 2, '#000000');
 

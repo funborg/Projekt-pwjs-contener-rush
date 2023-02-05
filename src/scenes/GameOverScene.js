@@ -7,6 +7,10 @@ export default class GameOverScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameOverScene' }, "game");
     }
+    init(data){
+        console.log(data)
+        this.data=data
+    }
 
     create() {
         this.cameras.main.fadeIn(1000)
@@ -31,32 +35,45 @@ export default class GameOverScene extends Phaser.Scene {
         graphics.strokeLineShape(line);
 
         //adding 'score' text 
-        this.score = this.add.text(innerHeight, innerWidth / 4 - 220, 'Your Score', { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
+        this.score = this.add.text(innerHeight, innerWidth / 4 - 220, 'TIME TOTAL:', { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
         this.score.setStroke('#133b54', 10);
         this.score.setShadow(1, 2, '#000000');
 
         //adding 'score' number (displaying it)
-        this.scoreNum = this.add.text(innerHeight, innerWidth / 4 - 180, window.playerScore, { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
+        this.scoreNum = this.add.text(innerHeight, innerWidth / 4 - 180, 
+        //minutes
+        Math.floor(this.data.time/600).toString().padStart(2,'0')+
+        //seconds
+        ':'+(Math.floor((this.data.time/10))%60).toString().padStart(2,'0')+
+        //miliseconds
+        '.'+Math.floor(this.data.time%10), { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
         this.scoreNum.setStroke('#133b54', 10);
         this.scoreNum.setShadow(1, 2, '#000000');
 
         //adding text for the ammount of delivered containers 
-        this.containerCount = this.add.text(innerHeight, innerWidth / 4 - 80, 'Delivered Containers', { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
+        this.containerCount = this.add.text(innerHeight, innerWidth / 4 - 80, 'DELIVERED CONTAINERS:', { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
         this.containerCount.setStroke('#133b54', 10);
         this.containerCount.setShadow(1, 2, '#000000');
 
         //adding the ammount of delivered containers number (displaying it)
-        this.containerCountNum = this.add.text(innerHeight, innerWidth / 4 - 30, window.deliveredContainers, { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
+        this.containerCountNum = this.add.text(innerHeight, innerWidth / 4 - 30, this.data.count, { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
         this.containerCountNum.setStroke('#133b54', 10);
         this.containerCountNum.setShadow(1, 2, '#000000');
 
         //adding text for average delivery time
-        this.avgTime = this.add.text(innerHeight, innerWidth / 4 + 70, 'Average Delivery Time', { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
+        this.avgTime = this.add.text(innerHeight, innerWidth / 4 + 70, 'AVARGEGE DELIVERY TIME:', { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
         this.avgTime.setStroke('#133b54', 10);
         this.avgTime.setShadow(1, 2, '#000000');
 
         //adding average delivery time (displaying it)
-        this.avgTimeNum = this.add.text(innerHeight, innerWidth / 4 + 120, window.avgDeliveryTime + '  sec', { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
+        this.avgTimeNum = this.add.text(innerHeight, innerWidth / 4 + 120, 
+        //minutes
+        Math.floor(this.data.avg/600).toString().padStart(2,'0')+
+        //seconds
+        ':'+(Math.floor((this.data.avg/10))%60).toString().padStart(2,'0')+
+        //miliseconds
+        '.'+Math.floor(this.data.avg%10)
+        , { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
         this.avgTimeNum.setStroke('#133b54', 10);
         this.avgTimeNum.setShadow(1, 2, '#000000');
 
@@ -72,9 +89,10 @@ export default class GameOverScene extends Phaser.Scene {
             this.cameras.main.fadeOut(1000, 0, 0, 0)
             this.menuB.removeInteractive()
             this.restartB.removeInteractive()
+
         });
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.time.delayedCall(5000, () => {this.scene.start('GameScene',)})})
+            this.time.delayedCall(500, () => { this.scene.restart('GameScene') })})
     
     }
 

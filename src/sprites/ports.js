@@ -64,8 +64,15 @@ constructor(scene,x,y,chunk,ID,color=0xFFFFFF)
     scene.matter.world.scene.add.existing(this.item);
     scene.matter.world.scene.add.existing(this);
     scene.matter.world.scene.add.existing(this.highlight)
-
-
+    this.timeelapsed=0
+    //timer for trakcing time
+    this.stopwatch = this.scene.time.addEvent({
+        delay:100,
+        repeat:1,
+        callback:()=>{this.timeelapsed++},
+        loop:true,
+        paused:true,
+    })
     //listen for interaction
     this.scene.events.on('interact',(ship)=>this.interact(ship))
     //adding brother
@@ -80,7 +87,7 @@ addbrother(scene,color){
     let p = scene.place(40)
     this.brother = new portB(scene,p.x,p.y,p.chunk,this.ID,color,this)
 }
-//check for ship in interact area
+//check for ship in interact area           
 isready(x,y){
     //highlight if ship is in interact area
     if(this.InteractArea.getBounds().contains(x,y)){
@@ -132,16 +139,22 @@ relocate(){
     this.satisfied=false
 }
 interact(ship){
-    //if ship is close by
+//if ship is close by
 if(this.InteractArea.getBounds().contains(ship.x,ship.y)){
     
     if(this.HasPackage&&!this.satisfied){
         //place packege in first aviable place
         for(let i=0;i<ship.inventory.length;i++)
             if(ship.inventory[i]==-1){
+
                 ship.inventory[i]=this.ID
                 this.HasPackage=false
+
                 this.scene.events.emit(Events.PACKAGE_EXCHANGE,this.ID,ship.inventory,this.color)
+                //start timer on first pickup
+                if(this.stopwatch.paused)
+                    this.stopwatch.paused=false
+
                 this.item.setVisible(false)
                 if(this.scene.game.isSoundOn)
                     this.loadContain.play()
@@ -151,9 +164,13 @@ if(this.InteractArea.getBounds().contains(ship.x,ship.y)){
         //remove macthing packege from ships inventory
         for(let i=0;i<ship.inventory.length;i++)
             if(ship.inventory[i]==this.ID){
+
                 ship.inventory[i]=-1
                 this.HasPackage=true
+
                 this.scene.events.emit(Events.PACKAGE_EXCHANGE,this.ID,ship.inventory,this.color)
+
+
                 this.item.setVisible(true)
                 if(this.scene.game.isSoundOn)
                     this.loadContain.play()
@@ -165,6 +182,8 @@ if(this.InteractArea.getBounds().contains(ship.x,ship.y)){
 }
 }
 
+
+/////////////////////////////////////////////////////////////////////////////////////
 
 }
 //port destination
@@ -178,7 +197,7 @@ constructor(scene,x,y,chunk,ID,color,port)
     this.brother=port
     this.item.setAlpha(0)
     this.scene.events.on('package_exchange',(ID)=>this.completeDelivery(ID))
-    //rotate 180 degrees to differentiate from brother
+    this.stopwatch = null
 
 }
 //overwrite addbrother function to prevent stack overflow
@@ -207,7 +226,11 @@ completeDelivery(ID){
     if(this.ID===ID&&this.HasPackage){
         if(this.scene.game.isSoundOn)
             this.delivContain.play()
-        this.scene.events.emit(Events.COMPLETED_DELIVERY, this.ID)
+        this.scene.events.emit(Events.COMPLETED_DELIVERY, this.ID,this.brother.timeelapsed)
+        if(this.brother.stopwatch){
+            this.brother.stopwatch.paused=true
+            this.brother.timeelapsed=0
+        }
         this.fadeout()
     }
 }  

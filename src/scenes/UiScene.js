@@ -11,6 +11,7 @@ constructor()
 create()
 {
     //get main game data
+    this.gamescene = null 
     this.gamescene = this.scene.get('GameScene');
     //health bar creation
     this.health = new HealthBar(this,250,60, 300,40,this.gamescene.ship.health)
@@ -43,7 +44,7 @@ create()
     }
     //inventory update upon event
     this.gamescene.events.on('package_exchange',(ID,inventory,color)=>this.inventoryUpdate(ID,inventory,color))
-
+    
 }
 update()
 {
@@ -68,6 +69,7 @@ inventoryUpdate(ID,inventory,color){
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
 }
 class slot extends Phaser.GameObjects.Image{
 constructor(scene,x,y,ID)
@@ -99,6 +101,8 @@ setitem(color,vis)
     this.setVisible(vis)
 }
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////
 class arrow extends Phaser.GameObjects.Graphics {
 constructor(scene,x,y,destination){
 
@@ -153,23 +157,21 @@ compassUpdate(x,y){
     }
 }
 targetchange(inventory){
-        
-
     //check for items in inventory
     //if it's in inventory change targets to port brother 
     //else change target to main port
     for (let i=0;i<inventory.length;i++)
         if(inventory[i]==this.ID){
-            this.target={x:this.destination.brother.x,y:this.destination.brother.y}
+            this.target={x:this.destination.brother.highlight.x,y:this.destination.brother.highlight.y}
             break;
         }else{
-            this.target={x:this.destination.x,y:this.destination.y}
-        }
-    this.compassUpdate(this.scene.gamescene.ship.x,this.scene.gamescene.ship.y)
+            this.target={x:this.destination.highlight.x,y:this.destination.highlight.y}
+
+    }   
 
 }
-
 }
+//////////////////////////////////////////////////////////////////////////////////////////
 class texttimer extends Phaser.GameObjects.Text{
     constructor (scene,x,y){
         super(scene,x,y,'time left ',{ fontFamily: 'Stencil', fontSize: 60, color: '#085b80' })
@@ -177,7 +179,7 @@ class texttimer extends Phaser.GameObjects.Text{
     //time value in seconds
     this.timeleft= 180;
     //time bonus given upon a succesful delivery
-    this.timebonus=10
+    this.timebonus=5
     this.updatetime();
     this.setOrigin(0.5);
     //timer background
@@ -198,7 +200,7 @@ class texttimer extends Phaser.GameObjects.Text{
     this.scene.add.existing(this)
     this.scene.add.existing(this.feedbacktxt)
     //add time on succesful delivery
-    this.scene.gamescene.events.on('completed_delivery',()=>{this.timeadded})
+    this.scene.gamescene.events.on('completed_delivery',this.timeadded,this)
     //tickdown the timer
     this.timedevent = this.scene.time.addEvent({
         delay:1000,
@@ -215,7 +217,7 @@ timeadded(){
     this.scene.tweens.add({
         targets:this.feedbacktxt,
         y:this.feedbacktxt.y+75,
-        duration:1500,
+        duration:2000,
         alpha:0,
         ease:'Quad',
         onComplete:()=>{
@@ -256,6 +258,7 @@ updatetime(){
 
 
 }
+////////////////////////////////////////////////////////////////////////
 class HealthBar  {
 constructor (scene,x,y,width,heigth,hp=100)
 {
