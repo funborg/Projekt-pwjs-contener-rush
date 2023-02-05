@@ -113,7 +113,7 @@ export default class InstrScene extends Phaser.Scene {
         this.instruction4 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.68, 'Game ends when ship is destroyed or time\'s up', { fontFamily: 'Stencil', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
         this.instruction4.setStroke('#012636', 6);
 
-        this.instruction5 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.71, 'See for how long can you go!', { fontFamily: 'Stencil', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
+        this.instruction5 = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.71, 'See how long can you go!', { fontFamily: 'Stencil', fontSize: 28, color: '#085b80' }).setOrigin(0.5);
         this.instruction5.setStroke('#012636', 6);
 
         //adding 3rd decorational line

@@ -27,7 +27,7 @@ create() {
     //defining initial 'y' position of text 
 
     //concatenating and displaying previously created text (and modyfying it)
-    this.text = this.add.text(this.game.scale.width * 0.5, this.game.scale.height*2, creators+'\n'+creator1+'\n'+creator2+'\n\n'+concept+'\n'+creator1+'\n\n'+textures+'\n'+creator2+'\n\n'+code+'\n'+creator1+'\n'+creator2+'\n\n'+menuBG+'\n'+menuBGsrc+'\n\n'+sounds+'\n'+soundsSrc, { fontFamily: 'Tw Cen MT Condensed Extra Bold', fontSize: 42, color: '#046187' }).setOrigin(0.5);
+    this.text = this.add.text(this.game.scale.width * 0.5, this.game.scale.height*1.5, creators+'\n'+creator1+'\n'+creator2+'\n\n'+concept+'\n'+creator1+'\n\n'+textures+'\n'+creator2+'\n\n'+code+'\n'+creator1+'\n'+creator2+'\n\n'+menuBG+'\n'+menuBGsrc+'\n\n'+sounds+'\n'+soundsSrc, { fontFamily: 'Tw Cen MT Condensed Extra Bold', fontSize: 42, color: '#046187' }).setOrigin(0.5);
     this.text.setStroke('#002636', 10);
     this.text.setShadow(1, 2, '#000000');
 
