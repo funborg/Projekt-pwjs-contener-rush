@@ -35,8 +35,7 @@ export default class GameOverScene extends Phaser.Scene {
 
         //adding 'GAME OVER' text 
         this.gameOver = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.13, 'GAME OVER', { fontFamily: 'Stencil', fontSize: 64, color: '#085b80' }).setOrigin(0.5);
-        this.gameOver.setStroke('#133b54', 15);
-        this.gameOver.setShadow(1, 2, '#000000');
+        this.gameOver.setStroke('#012636', 15);
 
         //adding decorational line
         var line = new Phaser.Geom.Line(this.game.scale.width * 0.265, this.game.scale.height * 0.18, this.game.scale.width * 0.735, this.game.scale.height * 0.18);
@@ -44,47 +43,41 @@ export default class GameOverScene extends Phaser.Scene {
         graphics.strokeLineShape(line);
 
         //adding 'score' text 
-        this.score = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.22, 'TIME TOTAL:', { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
-        this.score.setStroke('#133b54', 10);
-        this.score.setShadow(1, 2, '#000000');
+        this.score = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.22, 'TIME TOTAL:', { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        this.score.setStroke('#012636', 10);
 
         //adding 'score' number (displaying it)
-        this.scoreNum = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.26, 
+        this.scoreNum = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.27, 
         //minutes
         Math.floor(this.data.time/600).toString().padStart(2,'0')+
         //seconds
         ':'+(Math.floor((this.data.time/10))%60).toString().padStart(2,'0')+
         //miliseconds
-        '.'+Math.floor(this.data.time%10), { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
-        this.scoreNum.setStroke('#133b54', 10);
-        this.scoreNum.setShadow(1, 2, '#000000');
+        '.'+Math.floor(this.data.time%10), { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        this.scoreNum.setStroke('#012636', 10);
 
         //adding text for the ammount of delivered containers 
-        this.containerCount = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.36, 'DELIVERED CONTAINERS:', { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
-        this.containerCount.setStroke('#133b54', 10);
-        this.containerCount.setShadow(1, 2, '#000000');
+        this.containerCount = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.36, 'DELIVERED CONTAINERS:', { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        this.containerCount.setStroke('#012636', 10);
 
         //adding the ammount of delivered containers number (displaying it)
-        this.containerCountNum = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.40, this.data.count, { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
-        this.containerCountNum.setStroke('#133b54', 10);
-        this.containerCountNum.setShadow(1, 2, '#000000');
+        this.containerCountNum = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.41, this.data.count, { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        this.containerCountNum.setStroke('#012636', 10);
 
         //adding text for average delivery time
-        this.avgTime = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.50, 'AVARGEGE DELIVERY TIME:', { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
-        this.avgTime.setStroke('#133b54', 10);
-        this.avgTime.setShadow(1, 2, '#000000');
+        this.avgTime = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.50, 'AVARGEGE DELIVERY TIME:', { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        this.avgTime.setStroke('#012636', 10);
 
         //adding average delivery time (displaying it)
-        this.avgTimeNum = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.54, 
+        this.avgTimeNum = this.add.text(this.game.scale.width * 0.5, this.game.scale.height * 0.55, 
         //minutes
         Math.floor(this.data.avg/600).toString().padStart(2,'0')+
         //seconds
         ':'+(Math.floor((this.data.avg/10))%60).toString().padStart(2,'0')+
         //miliseconds
         '.'+Math.floor(this.data.avg%10)
-        , { fontFamily: 'Stencil', fontSize: 32, color: '#085b80' }).setOrigin(0.5);
-        this.avgTimeNum.setStroke('#133b54', 10);
-        this.avgTimeNum.setShadow(1, 2, '#000000');
+        , { fontFamily: 'Stencil', fontSize: 48, color: '#085b80' }).setOrigin(0.5);
+        this.avgTimeNum.setStroke('#012636', 10);
 
         //adding 2nd decorational line
         var lineTwo = new Phaser.Geom.Line(this.game.scale.width * 0.265, this.game.scale.height * 0.745, this.game.scale.width * 0.735, this.game.scale.height * 0.745);
